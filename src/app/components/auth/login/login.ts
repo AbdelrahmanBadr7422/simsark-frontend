@@ -1,51 +1,71 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { Auth } from '../../../services/auth';
-import { AuthResponse, LoginResponse, UserLogin } from '../../../models/authModels';
+import { LoginResponse, UserLogin, UserRoleEnum } from '../../../models/authModels';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
-  styleUrl: './login.css',
 })
 export class Login implements OnInit {
-  private _formBuilder = inject(FormBuilder);
   private _authService = inject(Auth);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   loginForm!: FormGroup;
-  loginStatusMessage: string = '';
-  ngOnInit() {
-    this.loginForm = this._formBuilder.group({
-      email: ['', Validators.required, Validators.email],
-      password: ['', Validators.required],
+  loginStatusMsg = '';
+  serverErrorMsg = '';
+  isLoading = false;
+
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  get email() {
-    return this.loginForm.get('email');
+  get f() {
+    return this.loginForm.controls;
   }
 
-  get password() {
-    return this.loginForm.get('password');
-  }
-
-  onSubmit() {
+  onSubmit(): void {
     if (this.loginForm.invalid) {
-      this.loginStatusMessage = 'Please fill in all required fields.';
+      this.loginForm.markAllAsTouched();
+      this.loginStatusMsg = 'Please fill in all required fields.';
       return;
     }
-    const userLogin = this.loginForm.value;
+
+    this.isLoading = true;
+    this.serverErrorMsg = '';
+
+    const userLogin: UserLogin = this.loginForm.value;
+
     this._authService.loginService(userLogin).subscribe({
-      next: (userRes: LoginResponse) => {
-        if (userRes.token) {
-          localStorage.setItem('authToken', userRes.token);
+      next: (res: LoginResponse) => {
+        this.isLoading = false;
+        this.loginStatusMsg = res.message;
+
+        if (res.token) {
+          localStorage.setItem('authToken', res.token);
         }
-        console.log(userRes);
-        this.loginStatusMessage = 'Login successful!';
+
+        if (res.data) {
+          localStorage.setItem('userRole', res.data.role);
+        }
+
+        if (res.data?.role === UserRoleEnum.Seller) {
+          this.router.navigate(['/dashboard']);
+        }
+
+        if (res.data?.role === UserRoleEnum.Customer) {
+          this.router.navigate(['/home']);
+        }
       },
-      error: () => {
-        this.loginStatusMessage = 'Login failed. Please try again later.';
+      error: (err: LoginResponse) => {
+        this.isLoading = false;
+        this.serverErrorMsg = err.message || 'Login failed. Please try again later.';
       },
     });
   }
