@@ -1,10 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'tailwindcss';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* your custom global styles (if any) below */
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

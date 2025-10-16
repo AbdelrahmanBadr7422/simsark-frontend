@@ -21,14 +21,12 @@ export class Auth {
   private _errorHandler = inject(ErrorHandler);
   private authUrl = `${environment.apiBaseUrl}/auth`;
 
-  //Signup Service
   singupService(userRegister: UserRegister): Observable<RegisterResponse> {
     return this._httpClient
       .post<RegisterResponse>(`${this.authUrl}/signup`, userRegister)
       .pipe(catchError(this._errorHandler.handleError));
   }
 
-  //Login Service
   loginService(userLogin: UserLogin): Observable<LoginResponse> {
     return this._httpClient
       .post<LoginResponse>(`${this.authUrl}/login`, userLogin, {
@@ -37,15 +35,13 @@ export class Auth {
       .pipe(catchError(this._errorHandler.handleError));
   }
 
-  //ForgetPass Service
   forgetPassService(email: string): Observable<PasswordResponse> {
     return this._httpClient
       .post<PasswordResponse>(`${this.authUrl}/forgetPassword`, { email })
       .pipe(catchError(this._errorHandler.handleError));
   }
 
-  //ResetPass Service
-  resetPassService(pass:string): Observable<PasswordResponse> {
+  resetPassService(pass: string): Observable<PasswordResponse> {
     return this._httpClient
       .patch<PasswordResponse>(`${this.authUrl}/resetPassword`, pass)
       .pipe(catchError(this._errorHandler.handleError));
