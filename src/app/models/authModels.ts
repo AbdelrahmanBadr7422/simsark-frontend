@@ -43,5 +43,3 @@ export interface PasswordResponse {
   status: ApiStatus;
   message: string;
 }
-
-

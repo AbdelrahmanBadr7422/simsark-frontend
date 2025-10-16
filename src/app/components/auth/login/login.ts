@@ -22,7 +22,7 @@ export class Login implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
@@ -46,19 +46,15 @@ export class Login implements OnInit {
       next: (res: LoginResponse) => {
         this.isLoading = false;
         this.loginStatusMsg = res.message;
-
         if (res.token) {
           localStorage.setItem('authToken', res.token);
         }
-
         if (res.data) {
           localStorage.setItem('userRole', res.data.role);
         }
-
         if (res.data?.role === UserRoleEnum.Seller) {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/create-post']);
         }
-
         if (res.data?.role === UserRoleEnum.Customer) {
           this.router.navigate(['/home']);
         }

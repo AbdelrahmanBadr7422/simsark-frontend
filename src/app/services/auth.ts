@@ -36,16 +36,15 @@ export class Auth {
       })
       .pipe(catchError(this._errorHandler.handleError));
   }
-
   //ForgetPass Service
   forgetPassService(email: string): Observable<PasswordResponse> {
     return this._httpClient
-      .post<PasswordResponse>(`${this.authUrl}/forgetPassword`, { email })
+      .post<PasswordResponse>(`${this.authUrl}/forgetPassword`, { email: email })
       .pipe(catchError(this._errorHandler.handleError));
   }
 
   //ResetPass Service
-  resetPassService(pass:string): Observable<PasswordResponse> {
+  resetPassService(pass: string): Observable<PasswordResponse> {
     return this._httpClient
       .patch<PasswordResponse>(`${this.authUrl}/resetPassword`, pass)
       .pipe(catchError(this._errorHandler.handleError));

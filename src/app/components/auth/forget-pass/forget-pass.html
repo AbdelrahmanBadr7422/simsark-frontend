@@ -1,0 +1,71 @@
+<section class="min-h-screen flex flex-col lg:flex-row bg-[#FFF5EE] text-[#2B1B12] pt-28 lg:pt-0">
+  <div class="lg:flex w-full lg:w-1/2 hidden bg-cover bg-center relative items-center"
+    style="background-image: url('../../../../assets/Landing/hero_image.png');">
+  </div>
+
+
+  <div class="w-full lg:w-1/2 flex items-center justify-center bg-[#DCC8B9] px-6 sm:px-10 md:px-16">
+    <div class="w-full max-w-md py-10">
+      <h2 class="text-2xl sm:text-3xl font-bold mb-8 text-center">Reset Password</h2>
+
+      <form [formGroup]="resetPasswordForm" (ngSubmit)="onResetSubmit()" class="space-y-6">
+
+        <div class="relative">
+          <input type="email" id="email" formControlName="email"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            placeholder="Email address" />
+          <label for="email"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B]
+              peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]
+              peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-[#2B1B12]">
+            Email address
+          </label>
+
+          @if(resetPasswordForm.get('email')?.touched && resetPasswordForm.get('email')?.invalid){
+          <div class="text-red-600 text-sm mt-1">
+            @if(resetPasswordForm.get('email')?.errors?.['required']){ <div>Email is required.</div> }
+            @if(resetPasswordForm.get('email')?.errors?.['email']){ <div>Enter a valid email.</div> }
+          </div>
+          }
+        </div>
+
+
+        @if(resetServerErrorMsg){
+        <div class="text-red-600 text-center mb-3 font-medium">
+          {{ resetServerErrorMsg }}
+        </div>
+        }
+        @if(resetStatusMsg && !resetServerErrorMsg){
+        <div class="text-green-600 text-center mb-3 font-medium">
+          {{ resetStatusMsg }}
+        </div>
+        }
+
+
+        <button type="submit" [disabled]="resetPasswordForm.invalid || isLoadingReset"
+          class="w-full bg-[#2B1B12] hover:bg-[#3B261A] transition-all text-white font-semibold py-3 rounded-lg flex justify-center items-center gap-2 disabled:opacity-50">
+          @if(isLoadingReset){
+          <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+          </svg>
+          <span>Sending...</span>
+          }
+          @else {
+          <span>Send Reset Link</span>
+          }
+        </button>
+      </form>
+
+
+      <div class="mt-6 text-center text-sm text-[#4B4B4B]">
+        Remember your password?
+        <a routerLink="/login" class="text-[#2B1B12] hover:underline font-semibold">
+          Login here
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
