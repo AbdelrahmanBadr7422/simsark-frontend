@@ -1,6 +1,6 @@
 import { UserSummary } from './offerModels';
 
-export type PropertyType = 'apartment' | 'villa' | 'studio' | 'land' | string;
+export type PropertyType = 'apartment' | 'villa' | 'studio' | 'land' ;
 
 export interface Post {
   _id: string;
@@ -25,7 +25,7 @@ export interface CreatePostRequest {
   area: number;
   rooms: number;
   bathrooms: number;
-  images: string[];
+  images?: string[];
 }
 
 export interface CreatePostResponse {

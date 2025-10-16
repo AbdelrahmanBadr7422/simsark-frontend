@@ -37,7 +37,7 @@ export class Auth {
 
   forgetPassService(email: string): Observable<PasswordResponse> {
     return this._httpClient
-      .post<PasswordResponse>(`${this.authUrl}/forgetPassword`, { email })
+      .post<PasswordResponse>(`${this.authUrl}/forgetPassword`, { email: email })
       .pipe(catchError(this._errorHandler.handleError));
   }
 

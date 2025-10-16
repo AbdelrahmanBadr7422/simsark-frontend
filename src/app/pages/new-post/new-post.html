@@ -1,0 +1,203 @@
+<section class="flex mt-20" style="height: 760px;">
+  <div class="w-full lg:w-1/2 flex items-center rounded m-auto justify-center px-6 md:px-12 bg-[#DCC8B9]">
+    <div class="w-full max-w-md py-10">
+      <h2 class="text-3xl font-bold mb-8 text-center">Create New Post</h2>
+
+      <form [formGroup]="postForm" (ngSubmit)="addNewPost()" class="space-y-6">
+        <div class="relative">
+          <input type="text" id="title" formControlName="title"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            placeholder="" />
+          <label for="title"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B]
+              peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]
+              peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-[#2B1B12]">
+            Title
+          </label>
+          @if(postForm.get('title')?.touched && postForm.get('title')?.invalid){
+          <div class="text-red-600 text-sm mt-1">
+            @if(postForm.get('title')?.errors?.['required']){
+            <div>title is required.</div>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="relative">
+          <input type="text" id="description" formControlName="description"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            placeholder="" />
+          <label for="description"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B]
+              peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]
+              peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-[#2B1B12]">
+            Description
+          </label>
+          @if(postForm.get('description')?.touched && postForm.get('description')?.invalid){
+
+          <div class="text-red-600 text-sm mt-1">
+            @if(postForm.get('description')?.errors?.['required']){
+            <div>description is required.</div>
+            }
+            @if(postForm.get('description')?.errors?.['minlength']){
+            <div>Minimum 6 characters.</div>
+            }
+          </div>
+
+          }
+        </div>
+
+        <div class="relative">
+          <label class="block mb-3 text-[#6B5B4D] text-sm font-medium">Property Type</label>
+
+          <div class="flex flex-wrap gap-4">
+            <label class="inline-flex items-center space-x-2 cursor-pointer">
+              <input type="radio" formControlName="propertyType" value="apartment" class="accent-[#2B1B12] w-4 h-4" />
+              <span class="text-[#2B1B12]">Apartment</span>
+            </label>
+
+            <label class="inline-flex items-center space-x-2 cursor-pointer">
+              <input type="radio" formControlName="propertyType" value="villa" class="accent-[#2B1B12] w-4 h-4" />
+              <span class="text-[#2B1B12]">Villa</span>
+            </label>
+
+            <label class="inline-flex items-center space-x-2 cursor-pointer">
+              <input type="radio" formControlName="propertyType" value="studio" class="accent-[#2B1B12] w-4 h-4" />
+              <span class="text-[#2B1B12]">Studio</span>
+            </label>
+
+            <label class="inline-flex items-center space-x-2 cursor-pointer">
+              <input type="radio" formControlName="propertyType" value="land" class="accent-[#2B1B12] w-4 h-4" />
+              <span class="text-[#2B1B12]">Land</span>
+            </label>
+          </div>
+
+          @if(postForm.get('propertyType')?.touched && postForm.get('propertyType')?.invalid){
+          <div class="text-red-600 text-sm mt-2">
+            @if(postForm.get('propertyType')?.errors?.['required']){
+            <div>Property Type is required.</div>
+            }
+            @if(postForm.get('propertyType')?.errors?.['propertyTypeInvalid']){
+            <div>Invalid property type selected.</div>
+            }
+          </div>
+          }
+        </div>
+
+        <div class="relative">
+          <input type="number" id="price" formControlName="price"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            placeholder="" />
+          <label for="price"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B]
+              peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]
+              peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-[#2B1B12]">
+            Price
+          </label>
+          @if(postForm.get('price')?.touched && postForm.get('price')?.invalid){
+          <div class="text-red-600 text-sm mt-1">
+            @if(postForm.get('price')?.errors?.['required']){
+            <div>Property Type Is Required.</div>
+            }
+          </div>
+          }
+        </div>
+
+        <!-- area -->
+        <div class="relative">
+          <input type="text" id="area" formControlName="area"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            placeholder="" />
+          <label for="area"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B]
+              peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]
+              peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-[#2B1B12]">
+            Area
+          </label>
+          @if(postForm.get('area')?.touched && postForm.get('area')?.invalid){
+          <div class="text-red-600 text-sm mt-1">
+            @if(postForm.get('area')?.errors?.['required']){
+            <div>Area is required.</div>
+            }
+          </div>
+          }
+        </div>
+        <!-- rooms -->
+        <div class="relative">
+          <input type="text" id="rooms" formControlName="rooms"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            placeholder="" />
+          <label for="rooms"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B]
+              peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]
+              peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-[#2B1B12]">
+            Rooms
+          </label>
+          @if(postForm.get('rooms')?.touched && postForm.get('rooms')?.invalid){
+          <div class="text-red-600 text-sm mt-1">
+            @if(postForm.get('rooms')?.errors?.['required']){
+            <div>Rooms is required.</div>
+            }
+          </div>
+          }
+        </div>
+        <!-- bathrooms -->
+        <div class="relative">
+          <input type="text" id="bathrooms" formControlName="bathrooms"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            placeholder="" />
+          <label for="bathrooms"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B]
+              peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]
+              peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-[#2B1B12]">
+            Bathrooms
+          </label>
+          @if(postForm.get('bathrooms')?.touched && postForm.get('bathrooms')?.invalid){
+          <div class="text-red-600 text-sm mt-1">
+            @if(postForm.get('bathrooms')?.errors?.['required']){
+            <div>Bathrooms is required.</div>
+            }
+          </div>
+          }
+        </div>
+        <!-- images -->
+        <div class="relative">
+          <input type="url" id="images" formControlName="images"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            placeholder="" />
+          <label for="images"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out
+              peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B]
+              peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]
+              peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-[#2B1B12]">
+            Images
+          </label>
+
+        </div>
+
+        <button type="submit" [disabled]="postForm.invalid || isLoading"
+          class="w-full bg-[#2B1B12] hover:bg-[#3b261a] transition-all text-white font-semibold py-3 rounded-lg disabled:opacity-50">
+          Add Post
+        </button>
+
+        @if(serverErrorMsg){
+        <div class="text-red-600 text-center mt-2">
+          {{ serverErrorMsg }}
+        </div>
+        }
+        @if(postStstus && !serverErrorMsg){
+        <div class="text-green-600 text-center mt-2">
+          Data Add Successfully
+        </div>
+        }
+      </form>
+
+    </div>
+  </div>
+</section>
