@@ -46,22 +46,18 @@ export class Login implements OnInit {
       next: (res: LoginResponse) => {
         this.isLoading = false;
         this.loginStatusMsg = res.message;
-        if (res.token) {
-          localStorage.setItem('authToken', res.token);
-        }
-        if (res.data) {
-          localStorage.setItem('userRole', res.data.role);
-        }
-        if (res.data?.role === UserRoleEnum.Seller) {
+
+        const role = res.data?.role;
+
+        if (role === UserRoleEnum.Seller) {
           this.router.navigate(['/create-post']);
-        }
-        if (res.data?.role === UserRoleEnum.Customer) {
+        } else {
           this.router.navigate(['/home']);
         }
       },
       error: (err: LoginResponse) => {
         this.isLoading = false;
-        this.serverErrorMsg = err.message || 'Login failed. Please try again later.';
+        this.serverErrorMsg = err.message || 'Login failed. Please try again.';
       },
     });
   }

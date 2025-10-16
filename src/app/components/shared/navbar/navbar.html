@@ -1,4 +1,4 @@
-<nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-12 py-6 bg-[#FFF5EE] shadow-sm">
+<nav class=" top-0 left-0 w-full z-50 flex items-center justify-between px-12 py-6 bg-[#FFF5EE] shadow-sm">
   <div class="flex items-center space-x-2">
     <a routerLink="/" class="text-2xl font-bold text-gray-800 hover:text-[#2B1B12] transition-colors duration-200">
       Simsark
@@ -18,7 +18,7 @@
         Contact
       </a>
     </li>
-    @if(isSeller){
+    @if((isLogged$ | async) === true){
     <li>
       <a routerLink="/create-post" routerLinkActive="text-[#2B1B12] font-semibold border-b-2 border-[#2B1B12]"
         class="hover:text-[#2B1B12] transition-colors duration-200 pb-1">
@@ -28,7 +28,7 @@
     }
   </ul>
 
-  @if(!isLogged){
+  @if((isLogged$ | async) === false){
   <div class="flex items-center space-x-5">
     <button routerLink="/auth/register"
       class="bg-[#2B1B12] text-white px-5 py-2 rounded-md hover:bg-[#3b261a] transition-all duration-200">

@@ -1,9 +1,10 @@
-<section class="flex mt-20" style="height: 760px;">
+<section class="flex">
   <div class="w-full lg:w-1/2 flex items-center rounded m-auto justify-center px-6 md:px-12 bg-[#DCC8B9]">
     <div class="w-full max-w-md py-10">
       <h2 class="text-3xl font-bold mb-8 text-center">Create New Post</h2>
 
       <form [formGroup]="postForm" (ngSubmit)="addNewPost()" class="space-y-6">
+
         <div class="relative">
           <input type="text" id="title" formControlName="title"
             class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
@@ -106,7 +107,6 @@
           }
         </div>
 
-        <!-- area -->
         <div class="relative">
           <input type="text" id="area" formControlName="area"
             class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
@@ -126,7 +126,7 @@
           </div>
           }
         </div>
-        <!-- rooms -->
+
         <div class="relative">
           <input type="text" id="rooms" formControlName="rooms"
             class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
@@ -146,7 +146,7 @@
           </div>
           }
         </div>
-        <!-- bathrooms -->
+
         <div class="relative">
           <input type="text" id="bathrooms" formControlName="bathrooms"
             class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
@@ -166,7 +166,7 @@
           </div>
           }
         </div>
-        <!-- images -->
+
         <div class="relative">
           <input type="url" id="images" formControlName="images"
             class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
@@ -178,7 +178,6 @@
               peer-not-placeholder-shown:top-0 peer-not-placeholder-shown:text-xs peer-not-placeholder-shown:text-[#2B1B12]">
             Images
           </label>
-
         </div>
 
         <button type="submit" [disabled]="postForm.invalid || isLoading"
@@ -191,11 +190,13 @@
           {{ serverErrorMsg }}
         </div>
         }
+
         @if(postStstus && !serverErrorMsg){
         <div class="text-green-600 text-center mt-2">
           Data Add Successfully
         </div>
         }
+
       </form>
 
     </div>
