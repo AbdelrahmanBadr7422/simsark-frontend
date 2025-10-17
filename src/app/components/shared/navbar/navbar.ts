@@ -1,29 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Auth } from '../../../services/auth';
+import { AsyncPipe } from '@angular/common';
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive,AsyncPipe],
   templateUrl: './navbar.html',
 })
-export class Navbar implements OnInit {
-  isLogged:boolean;
-  isSeller:boolean;
-  constructor(){
-    this.isLogged = false;
-    this.isSeller = false;
-  }
+export class Navbar {
+  private authService = inject(Auth);
+  private router = inject(Router)
+  isLogged$ = this.authService.isLogged$;
+  isSeller$ = this.authService.isSeller$;
 
-  ngOnInit(): void {
-    if(localStorage.getItem('authToken')!=null){
-      this.isLogged = true;
-    }
-    if(localStorage.getItem('userRole')==="seller"){
-      this.isSeller = true;
-    }
-  }
-
-  logout(){
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userRole');
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/home']);
   }
 }

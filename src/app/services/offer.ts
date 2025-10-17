@@ -25,7 +25,8 @@ export class Offer {
       .pipe(catchError(this._errorHandler.handleError));
   }
 
-  grespondeToOffer(respond: RespondToOfferRequest): Observable<RespondToOfferRequest> {
+  // Get Single Offer Service
+  respondToOffer(respond: RespondToOfferRequest): Observable<RespondToOfferRequest> {
     return this._httpClient
       .patch<RespondToOfferRequest>(this.offerUrl, respond)
       .pipe(catchError(this._errorHandler.handleError));
