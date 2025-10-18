@@ -113,8 +113,9 @@ export class Auth {
 
   //ResetPass Service
   resetPassService(pass: string): Observable<PasswordResponse> {
+    const token = localStorage.getItem('authToken');
     return this._httpClient
-      .patch<PasswordResponse>(`${this.authUrl}/resetPassword`, { password: pass })
+      .patch<PasswordResponse>(`${this.authUrl}/resetPassword/${token}`, { password: pass })
       .pipe(catchError(this._errorHandler.handleError));
   }
 }

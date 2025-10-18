@@ -28,8 +28,8 @@
     }
   </ul>
 
-  @if((isLogged$ | async) === false){
-  <div class="flex items-center space-x-5">
+  <div class="flex items-center space-x-2">
+    @if((isLogged$ | async) === false){
     <button routerLink="/auth/register"
       class="bg-[#2B1B12] text-white px-5 py-2 rounded-md hover:bg-[#3b261a] transition-all duration-200">
       Register
@@ -38,11 +38,17 @@
       class="bg-[#2B1B12] text-white px-5 py-2 rounded-md hover:bg-[#3b261a] transition-all duration-200">
       Login
     </button>
+    } @else {
+    <button routerLink="/profile" class="border-2 border-white hover:border-[#3b261a]  rounded p-2 cursor-pointer">
+      <i class="fa-solid fa-user"></i>
+      Profile
+    </button>
+    <button (click)="logout()"
+      class="bg-[#2B1B12] text-white px-5 py-2 rounded-md hover:bg-[#3b261a] transition-all duration-200">
+      Logout
+    </button>
+
+    }
   </div>
-  } @else {
-  <button (click)="logout()"
-    class="bg-[#2B1B12] text-white px-5 py-2 rounded-md hover:bg-[#3b261a] transition-all duration-200">
-    Logout
-  </button>
-  }
+
 </nav>

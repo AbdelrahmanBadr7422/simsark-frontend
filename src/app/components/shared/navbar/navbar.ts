@@ -8,6 +8,7 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './navbar.html',
 })
 export class Navbar {
+
   private authService = inject(Auth);
   private router = inject(Router)
   isLogged$ = this.authService.isLogged$;
@@ -17,4 +18,5 @@ export class Navbar {
     this.authService.logout();
     this.router.navigate(['/home']);
   }
+
 }

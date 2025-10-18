@@ -31,6 +31,7 @@ export interface User {
   fname: string;
   lname: string;
   role: UserRoleEnum;
+  password:string;
 }
 
 export type LoginResponse = AuthResponse<User>;
