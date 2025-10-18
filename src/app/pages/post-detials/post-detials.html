@@ -1,0 +1,25 @@
+<div class="container mx-auto flex flex-wrap gap-4 p-4">
+  @if (currentPost) {
+  <div class="w-full bg-white shadow rounded overflow-hidden">
+    <img src="../../../../../assets/background.jpg" alt="Apartment image" class="w-full h-48 object-cover">
+
+    <div class="p-4">
+      <h3 class="text-2xl font-bold mb-2">
+        {{ currentPost.title }}
+      </h3>
+      <pre>{{currentPost | json}}</pre>
+      <ul class="space-y-1 text-xl text-gray-700">
+        <li><strong>Owner : {{currentPost.owner.email}}</strong></li>
+        <li><strong>Type of property : {{currentPost.propertyType}}</strong> </li>
+        <li><strong>Area : {{currentPost.area}} m²</strong></li>
+        <li><strong>Rooms : {{currentPost.rooms}}</strong> </li>
+        <li><strong>Bathrooms : {{currentPost.bathrooms}}</strong> </li>
+        <li><strong>last Update : {{currentPost.updatedAt | date}}</strong> </li>
+        <app-payment [moneyAmount]="currentPost.price">{{currentPost.price}}</app-payment>
+      </ul>
+
+    </div>
+  </div>
+  }
+
+</div>

@@ -42,6 +42,11 @@ export const routes: Routes = [
   },
 
   {
+    path: 'post/:postId',
+    loadComponent: () => import('./pages/post-detials/post-detials').then((c) => c.PostDetails),
+    title: 'Post',
+  },
+  {
     path: 'contact',
     loadComponent: () => import('./pages/contact/contact').then((c) => c.Contact),
     title: 'Contact Us',
