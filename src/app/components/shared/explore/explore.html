@@ -1,14 +1,11 @@
-<!-- Search Filters -->
-<section class="flex justify-center -mt-20 z-10 relative px-4">
+<section class="flex justify-center mt-20 z-10 relative px-4">
   <div
     class="bg-[#DCC8B9] shadow-lg rounded-2xl w-full max-w-5xl p-4 md:p-6 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
 
-    <!-- Location Input -->
     <input type="text" placeholder="Location"
       class="flex-1 w-full bg-white px-4 py-2 rounded-md border border-gray-300 outline-none focus:ring-2 focus:ring-[#2B1B12]"
       [value]="location()" (input)="location.set($event.target.value)" />
 
-    <!-- Property Type Dropdown -->
     <select
       class="flex-1 w-full bg-white px-4 py-2 rounded-md border border-gray-300 outline-none focus:ring-2 focus:ring-[#2B1B12]"
       [value]="propertyType()" #propType (change)="propertyType.set(propType.value)">
@@ -19,7 +16,6 @@
       <option value="Land">Land</option>
     </select>
 
-    <!-- Price Range Dropdown -->
     <select
       class="flex-1 w-full bg-white px-4 py-2 rounded-md border border-gray-300 outline-none focus:ring-2 focus:ring-[#2B1B12]"
       [value]="priceRange()" #propPrice (change)="propertyType.set(propPrice.value)">

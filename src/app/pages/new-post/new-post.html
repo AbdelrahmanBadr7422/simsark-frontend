@@ -55,22 +55,22 @@
 
           <div class="flex flex-wrap gap-4">
             <label class="inline-flex items-center space-x-2 cursor-pointer">
-              <input type="radio" formControlName="propertyType" value="apartment" class="accent-[#2B1B12] w-4 h-4" />
+              <input type="radio" formControlName="propertyType" value="Apartment" class="accent-[#2B1B12] w-4 h-4" />
               <span class="text-[#2B1B12]">Apartment</span>
             </label>
 
             <label class="inline-flex items-center space-x-2 cursor-pointer">
-              <input type="radio" formControlName="propertyType" value="villa" class="accent-[#2B1B12] w-4 h-4" />
+              <input type="radio" formControlName="propertyType" value="Villa" class="accent-[#2B1B12] w-4 h-4" />
               <span class="text-[#2B1B12]">Villa</span>
             </label>
 
             <label class="inline-flex items-center space-x-2 cursor-pointer">
-              <input type="radio" formControlName="propertyType" value="studio" class="accent-[#2B1B12] w-4 h-4" />
+              <input type="radio" formControlName="propertyType" value="Studio" class="accent-[#2B1B12] w-4 h-4" />
               <span class="text-[#2B1B12]">Studio</span>
             </label>
 
             <label class="inline-flex items-center space-x-2 cursor-pointer">
-              <input type="radio" formControlName="propertyType" value="land" class="accent-[#2B1B12] w-4 h-4" />
+              <input type="radio" formControlName="propertyType" value="Land" class="accent-[#2B1B12] w-4 h-4" />
               <span class="text-[#2B1B12]">Land</span>
             </label>
           </div>
@@ -180,14 +180,20 @@
           </label>
         </div>
 
-        <button type="submit" [disabled]="postForm.invalid || isLoading"
-          class="w-full bg-[#2B1B12] hover:bg-[#3b261a] transition-all text-white font-semibold py-3 rounded-lg disabled:opacity-50">
-          Add Post
-        </button>
-
         @if(serverErrorMsg){
         <div class="text-red-600 text-center mt-2">
           {{ serverErrorMsg }}
+        </div>
+        }
+        @if(serverErrorMsg){
+        <div class="text-red-600 text-center mt-2">
+          {{ serverErrorMsg }}
+        </div>
+        }
+
+        @if(successMessage){
+        <div class="text-green-600 text-center mt-2">
+          {{ successMessage }}
         </div>
         }
 
@@ -196,6 +202,11 @@
           Data Add Successfully
         </div>
         }
+
+        <button type="submit" [disabled]="postForm.invalid || isLoading"
+          class="w-full bg-[#2B1B12] hover:bg-[#3b261a] transition-all text-white font-semibold py-3 rounded-lg disabled:opacity-50">
+          Add Post
+        </button>
 
       </form>
 

@@ -9,6 +9,7 @@ import {
   LoginResponse,
   PasswordResponse,
   RegisterResponse,
+  User,
   UserLogin,
   UserRegister,
 } from '../models/authModels';
@@ -24,9 +25,11 @@ export class Auth {
 
   private isLoggedSubject = new BehaviorSubject<boolean>(this.hasToken());
   private isSellerSubject = new BehaviorSubject<boolean>(this.getRole() === 'seller');
+  private currentUserSubject = new BehaviorSubject<User | null>(this.getStoredUser());
 
   isLogged$ = this.isLoggedSubject.asObservable();
   isSeller$ = this.isSellerSubject.asObservable();
+  currentUser$ = this.currentUserSubject.asObservable();
 
   private hasToken(): boolean {
     return localStorage.getItem('authToken') !== null;
@@ -34,6 +37,11 @@ export class Auth {
 
   private getRole(): string | null {
     return localStorage.getItem('userRole');
+  }
+
+  private getStoredUser(): User | null {
+    const userJson = localStorage.getItem('userData');
+    return userJson ? JSON.parse(userJson) : null;
   }
 
   //Signup Service
@@ -44,10 +52,16 @@ export class Auth {
           localStorage.setItem('authToken', res.token);
           this.isLoggedSubject.next(true);
         }
-        if (res.data?.role) {
-          localStorage.setItem('userRole', res.data?.role);
+        if (res.data) {
+          localStorage.setItem('userData', JSON.stringify(res.data));
+
+          if (res.data.role) {
+            localStorage.setItem('userRole', res.data.role);
+            this.isSellerSubject.next(res.data.role === 'seller');
+          }
+
+          this.currentUserSubject.next(res.data);
         }
-        this.isSellerSubject.next(res.data?.role === 'seller');
       }),
       catchError(this._errorHandler.handleError)
     );
@@ -65,10 +79,16 @@ export class Auth {
             localStorage.setItem('authToken', res.token);
             this.isLoggedSubject.next(true);
           }
-          if (res.data?.role) {
-            localStorage.setItem('userRole', res.data?.role);
+          if (res.data) {
+            localStorage.setItem('userData', JSON.stringify(res.data));
+
+            if (res.data.role) {
+              localStorage.setItem('userRole', res.data.role);
+              this.isSellerSubject.next(res.data.role === 'seller');
+            }
+
+            this.currentUserSubject.next(res.data);
           }
-          this.isSellerSubject.next(res.data?.role === 'seller');
         }),
         catchError(this._errorHandler.handleError)
       );
@@ -78,8 +98,10 @@ export class Auth {
   logout(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('userData');
     this.isLoggedSubject.next(false);
     this.isSellerSubject.next(false);
+    this.currentUserSubject.next(null);
   }
 
   //ForgetPass Service
