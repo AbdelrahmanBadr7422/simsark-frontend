@@ -1,4 +1,7 @@
-<section class="min-h-screen flex flex-col lg:flex-row text-[#2B1B12] bg-[#FFF5EE]">
+<section
+  class="flex flex-col lg:flex-row text-[#2B1B12] bg-[#FFF5EE]"
+  style="height: calc(100vh - 88px)"
+>
   <div
     class="lg:flex w-full lg:w-1/2 hidden bg-cover bg-center relative items-center"
     style="background-image: url('../../../../assets/Landing/hero_image.png')"
@@ -61,7 +64,7 @@
 
         <div class="text-right mt-1">
           <a
-            routerLink="/reset-password"
+            routerLink="/auth/reset-password"
             class="text-sm text-[#2B1B12] hover:underline font-semibold"
           >
             Forgot Password?
@@ -113,7 +116,7 @@
 
       <div class="mt-6 text-center text-sm text-[#4B4B4B]">
         Don't have an account?
-        <a routerLink="/register" class="text-[#2B1B12] font-semibold hover:underline"
+        <a routerLink="/auth/register" class="text-[#2B1B12] font-semibold hover:underline"
           >Register here</a
         >
       </div>

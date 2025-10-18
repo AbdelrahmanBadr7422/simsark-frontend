@@ -1,4 +1,7 @@
-<section class="min-h-screen flex flex-col lg:flex-row text-[#2B1B12] bg-[#FFF5EE]">
+<section
+  class="flex flex-col lg:flex-row text-[#2B1B12] bg-[#FFF5EE]"
+  style="height: calc(100vh - 88px)"
+>
   <div
     class="lg:flex w-full lg:w-1/2 hidden bg-cover bg-center relative items-center"
     style="background-image: url('../../../../assets/Landing/hero_image.png')"
@@ -180,7 +183,9 @@
 
       <div class="mt-6 text-center text-[#4A3B32] text-sm">
         Already have an account?
-        <a routerLink="/login" class="text-[#2B1B12] hover:underline font-semibold">Login here</a>
+        <a routerLink="/auth/login" class="text-[#2B1B12] hover:underline font-semibold"
+          >Login here</a
+        >
       </div>
     </div>
   </div>

@@ -1,15 +1,13 @@
-<section class="min-h-screen flex flex-col lg:flex-row bg-[#FFF5EE] text-[#2B1B12] pt-28 lg:pt-0">
+<section class="flex flex-col lg:flex-row text-[#2B1B12] bg-[#FFF5EE]" style="height: calc(100vh - 88px);">
   <div class="lg:flex w-full lg:w-1/2 hidden bg-cover bg-center relative items-center"
     style="background-image: url('../../../../assets/Landing/hero_image.png');">
   </div>
 
-
-  <div class="w-full lg:w-1/2 flex items-center justify-center bg-[#DCC8B9] px-6 sm:px-10 md:px-16">
+  <div class="w-full  flex items-center justify-center bg-[#DCC8B9] px-6 sm:px-10 md:px-16">
     <div class="w-full max-w-md py-10">
       <h2 class="text-2xl sm:text-3xl font-bold mb-8 text-center">Reset Password</h2>
 
       <form [formGroup]="resetPasswordForm" (ngSubmit)="onResetSubmit()" class="space-y-6">
-
         <div class="relative">
           <input type="email" id="email" formControlName="email"
             class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
@@ -30,7 +28,6 @@
           }
         </div>
 
-
         @if(resetServerErrorMsg){
         <div class="text-red-600 text-center mb-3 font-medium">
           {{ resetServerErrorMsg }}
@@ -41,7 +38,6 @@
           {{ resetStatusMsg }}
         </div>
         }
-
 
         <button type="submit" [disabled]="resetPasswordForm.invalid || isLoadingReset"
           class="w-full bg-[#2B1B12] hover:bg-[#3B261A] transition-all text-white font-semibold py-3 rounded-lg flex justify-center items-center gap-2 disabled:opacity-50">
@@ -59,10 +55,9 @@
         </button>
       </form>
 
-
       <div class="mt-6 text-center text-sm text-[#4B4B4B]">
         Remember your password?
-        <a routerLink="/login" class="text-[#2B1B12] hover:underline font-semibold">
+        <a routerLink="/auth/login" class="text-[#2B1B12] hover:underline font-semibold">
           Login here
         </a>
       </div>

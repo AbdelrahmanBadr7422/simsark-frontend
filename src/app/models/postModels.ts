@@ -2,7 +2,7 @@ import { UserSummary } from './offerModels';
 
 export type PropertyType = 'apartment' | 'villa' | 'studio' | 'land' ;
 
-export interface Post {
+export interface PostModel {
   _id: string;
   title: string;
   description: string;
@@ -30,17 +30,17 @@ export interface CreatePostRequest {
 
 export interface CreatePostResponse {
   success: boolean;
-  data: Post;
+  data: PostModel;
 }
 
 export interface GetPostsResponse {
   success: boolean;
-  data: Post[];
+  data: PostModel[];
 }
 
 export interface GetPostByIdResponse {
   success: boolean;
-  data: Post;
+  data: PostModel;
 }
 export interface updatePostRequest {
   title?: string;
@@ -54,7 +54,7 @@ export interface updatePostRequest {
 }
 export interface UpdatePostResponse {
   success: boolean;
-  data: Post;
+  data: PostModel;
 }
 
 export interface DeletePostResponse {
