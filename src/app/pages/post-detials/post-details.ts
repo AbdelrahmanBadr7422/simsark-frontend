@@ -3,15 +3,15 @@ import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Offer } from '../../services/offer';
 import { Post } from '../../services/post';
 import { Payment } from '../../components/shared/payment/payment';
 import {
   CreatePostRequest,
-  DeletePostResponse,
   GetPostByIdResponse,
-  PostModel,
   UpdatePostResponse,
 } from '../../models/postModels';
+import { CreateOfferRequest, CreateOfferResponse } from '../../models/offerModels';
 
 @Component({
   selector: 'app-post-details',
@@ -21,17 +21,19 @@ import {
 })
 export class PostDetails implements OnInit, OnDestroy {
   private postService = inject(Post);
+  private offerService = inject(Offer);
   private route = inject(ActivatedRoute);
   private fb = inject(FormBuilder);
   private destroy$ = new Subject<void>();
 
-  currentPost?: PostModel;
+  currentPost: any;
   isLoading = true;
   hasError = false;
   postOwner = false;
 
   showDeleteConfirm = false;
   showEditModal = false;
+  showOfferModal = false;
   showToast = false;
   toastMessage = '';
   toastType: 'success' | 'error' = 'success';
@@ -43,6 +45,11 @@ export class PostDetails implements OnInit, OnDestroy {
     area: [0, [Validators.required, Validators.min(1)]],
     rooms: [0, [Validators.required, Validators.min(1)]],
     bathrooms: [0, [Validators.required, Validators.min(1)]],
+  });
+
+  offerForm = this.fb.group({
+    amount: [0, [Validators.required, Validators.min(1)]],
+    message: ['', [Validators.required, Validators.minLength(5)]],
   });
 
   ngOnInit(): void {
@@ -71,18 +78,9 @@ export class PostDetails implements OnInit, OnDestroy {
         next: (response: GetPostByIdResponse) => {
           this.currentPost = response.data;
           this.isLoading = false;
-
           const userId = localStorage.getItem('userData');
           this.postOwner = !!userId && userId.includes(this.currentPost.owner._id);
-
-          this.updateForm.patchValue({
-            title: this.currentPost.title,
-            description: this.currentPost.description,
-            price: this.currentPost.price,
-            area: this.currentPost.area,
-            rooms: this.currentPost.rooms,
-            bathrooms: this.currentPost.bathrooms,
-          });
+          this.updateForm.patchValue(this.currentPost);
         },
         error: () => {
           this.hasError = true;
@@ -91,7 +89,32 @@ export class PostDetails implements OnInit, OnDestroy {
       });
   }
 
-  // --- DELETE HANDLING ---
+  openOfferModal() {
+    this.showOfferModal = true;
+  }
+
+  closeOfferModal() {
+    this.showOfferModal = false;
+  }
+
+  submitOffer() {
+    if (this.offerForm.invalid || !this.currentPost) return;
+
+    const offer: CreateOfferRequest = {
+      postId: this.currentPost._id,
+      amount: this.offerForm.value.amount!,
+      message: this.offerForm.value.message!,
+    };
+
+    this.offerService.addOfferService(offer).subscribe({
+      next: (res: CreateOfferResponse) => {
+        this.showOfferModal = false;
+        this.showToastMessage(' Offer sent successfully!', 'success');
+      },
+      error: () => this.showToastMessage('Failed to send offer', 'error'),
+    });
+  }
+
   confirmDelete() {
     this.showDeleteConfirm = true;
   }
@@ -111,11 +134,10 @@ export class PostDetails implements OnInit, OnDestroy {
           this.showToastMessage('Post deleted successfully 🗑️', 'success');
           setTimeout(() => window.history.back(), 1500);
         },
-        error: () => this.showToastMessage('Failed to delete post ❌', 'error'),
+        error: () => this.showToastMessage('Failed to delete post ', 'error'),
       });
   }
 
-  // --- EDIT HANDLING ---
   openEditModal() {
     this.showEditModal = true;
   }
@@ -126,17 +148,10 @@ export class PostDetails implements OnInit, OnDestroy {
 
   savePostUpdate() {
     if (this.updateForm.invalid || !this.currentPost) return;
-
     const body: CreatePostRequest = {
-      title: this.updateForm.value.title!,
-      description: this.updateForm.value.description!,
-      price: Number(this.updateForm.value.price!),
-      area: Number(this.updateForm.value.area!),
-      rooms: Number(this.updateForm.value.rooms!),
-      bathrooms: Number(this.updateForm.value.bathrooms!),
+      ...this.updateForm.value,
       propertyType: this.currentPost.propertyType,
-    };
-
+    } as any;
     this.postService
       .updatePost(this.currentPost._id, body)
       .pipe(takeUntil(this.destroy$))
@@ -144,13 +159,12 @@ export class PostDetails implements OnInit, OnDestroy {
         next: (res: UpdatePostResponse) => {
           this.currentPost = res.data;
           this.showEditModal = false;
-          this.showToastMessage('✅ Post updated successfully!', 'success');
+          this.showToastMessage(' Post updated successfully!', 'success');
         },
-        error: () => this.showToastMessage('Failed to update post ❌', 'error'),
+        error: () => this.showToastMessage('Failed to update post ', 'error'),
       });
   }
 
-  // --- TOAST HANDLER ---
   private showToastMessage(msg: string, type: 'success' | 'error') {
     this.toastMessage = msg;
     this.toastType = type;
