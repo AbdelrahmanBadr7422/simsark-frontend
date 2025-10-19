@@ -37,6 +37,7 @@ export class Explore implements OnInit {
   loadPosts() {
     this._postService.getAllPosts().subscribe({
       next: (res: GetPostsResponse) => {
+        console.log(res);
         if (res.data) this.postsList.set(res.data);
       },
       error: () => console.error('Failed to load posts'),

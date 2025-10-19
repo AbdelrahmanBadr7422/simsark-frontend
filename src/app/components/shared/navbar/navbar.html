@@ -1,27 +1,42 @@
-<nav class=" top-0 left-0 w-full z-50 flex items-center justify-between px-12 py-6 bg-[#3b261a] shadow-sm text-[#8C7A6B]">
+<nav
+  class="top-0 left-0 w-full z-50 flex items-center justify-between px-12 py-6 bg-[#3b261a] shadow-sm text-[#8C7A6B]"
+>
   <div class="flex items-center space-x-2">
-    <a routerLink="/" class="text-2xl font-bold text-gray-800 hover:text-[#2B1B12] transition-colors duration-200">
-      <img src="../../../../assets/logo.png" alt="Simsark Logo" class="w-40 rounded">
+    <a
+      routerLink="/"
+      class="text-2xl font-bold text-gray-800 hover:text-[#2B1B12] transition-colors duration-200"
+    >
+      <img src="../../../../assets/logo.png" alt="Simsark Logo" class="w-40 rounded" />
     </a>
   </div>
 
   <ul class="flex space-x-10 text-[#8C7A6B] font-medium">
     <li>
-      <a routerLink="/" routerLinkActive="text-[#2B1B12] font-semibold border-b-2 border-[#2B1B12]"
-        [routerLinkActiveOptions]="{ exact: true }" class="hover:text-[#8c7a6bc2] transition-colors duration-200 pb-1">
+      <a
+        routerLink="/home"
+        routerLinkActive="text-[#2B1B12] font-semibold border-b-2 border-[#2B1B12]"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="hover:text-[#8c7a6bc2] transition-colors duration-200 pb-1"
+      >
         Home
       </a>
     </li>
     <li>
-      <a routerLink="/contact" routerLinkActive="text-[#2B1B12] font-semibold border-b-2 border-[#2B1B12]"
-        class="hover:text-[#8c7a6bc2]transition-colors duration-200 pb-1">
+      <a
+        routerLink="/contact"
+        routerLinkActive="text-[#2B1B12] font-semibold border-b-2 border-[#2B1B12]"
+        class="hover:text-[#8c7a6bc2]transition-colors duration-200 pb-1"
+      >
         Contact
       </a>
     </li>
     @if((isLogged$ | async) === true){
     <li>
-      <a routerLink="/create-post" routerLinkActive="text-[#2B1B12] font-semibold border-b-2 border-[#2B1B12]"
-        class="hover:text-[#8c7a6bc2]transition-colors duration-200 pb-1">
+      <a
+        routerLink="/create-post"
+        routerLinkActive="text-[#2B1B12] font-semibold border-b-2 border-[#2B1B12]"
+        class="hover:text-[#8c7a6bc2]transition-colors duration-200 pb-1"
+      >
         New Post
       </a>
     </li>
@@ -30,25 +45,33 @@
 
   <div class="flex items-center space-x-2">
     @if((isLogged$ | async) === false){
-    <button routerLink="/auth/register"
-      class="bg-[#2B1B12] font-bold text-[#8c7a6bc2] px-5 py-2 rounded-md hover:text-[#3b261a] hover:bg-[#8c7a6bc2] transition-all duration-200">
+    <button
+      routerLink="/auth/register"
+      class="bg-[#2B1B12] font-bold text-[#8c7a6bc2] px-5 py-2 rounded-md hover:text-[#3b261a] hover:bg-[#8c7a6bc2] transition-all duration-200"
+    >
       Register
     </button>
-    <button routerLink="/auth/login"
-      class="bg-[#2B1B12] font-bold text-[#8c7a6bc2] px-5 py-2 rounded-md hover:text-[#3b261a] hover:bg-[#8c7a6bc2] transition-all duration-200">
+    <button
+      routerLink="/auth/login"
+      class="bg-[#2B1B12] font-bold text-[#8c7a6bc2] px-5 py-2 rounded-md hover:text-[#3b261a] hover:bg-[#8c7a6bc2] transition-all duration-200"
+    >
       Login
     </button>
     } @else {
-    <button routerLink="/profile" class="border-2 border-[#3b261a] hover:border-[#3b261a]  rounded p-2 cursor-pointer">
+    <button
+      routerLink="/profile"
+      class="border-2 border-[#3b261a] hover:border-[#3b261a] rounded p-2 cursor-pointer"
+    >
       <i class="fa-solid fa-user"></i>
       Profile
     </button>
-    <button (click)="logout()"
-      class="bg-[#2B1B12] font-bold text-[#8c7a6bc2] px-5 py-2 rounded-md hover:text-[#3b261a] hover:bg-[#8c7a6bc2] transition-all duration-200">
+    <button
+      (click)="logout()"
+      class="bg-[#2B1B12] font-bold text-[#8c7a6bc2] px-5 py-2 rounded-md hover:text-[#3b261a] hover:bg-[#8c7a6bc2] transition-all duration-200"
+    >
       Logout
     </button>
 
     }
   </div>
-
 </nav>
