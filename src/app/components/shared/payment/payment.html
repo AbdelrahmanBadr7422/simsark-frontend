@@ -1,0 +1,12 @@
+<div class="max-w-md text-center mt-10">
+  <div class="space-y-4">
+    <button (click)="makePayment(moneyAmount)"
+      class="w-full bg-[#2B1B12] hover:bg-[#3b261a] text-white py-2 rounded disabled:opacity-50" [disabled]="loading">
+      @if (loading) {
+      <span class="animate-spin mr-2">🔄</span> Processing...
+      } @else {
+      Pay $<ng-content></ng-content>
+      }
+    </button>
+  </div>
+</div>

@@ -1,17 +1,53 @@
-<section class="bg-[#FFF5EE] px-6 md:px-12 py-12 flex flex-col md:flex-row items-center justify-between">
-  <div class="max-w-2xl text-center md:text-left">
-    <h1 class="text-[#2B1B12] font-extrabold leading-tight text-4xl md:text-6xl tracking-tight">
-      <span class="block text-[#8C7A6B]">Find Your Dream Apartment</span>
+<section
+  class="relative bg-gradient-to-br from-[#FFF8F3] via-[#F8F4F0] to-[#EADFD5] px-8 md:px-16 py-16 flex flex-col md:flex-row items-center justify-between overflow-hidden"
+>
+  <div class="absolute top-0 left-0 w-40 h-40 bg-[#DCC8B9] opacity-30 blur-3xl rounded-full"></div>
+  <div
+    class="absolute bottom-0 right-0 w-64 h-64 bg-[#B99F8A] opacity-20 blur-3xl rounded-full"
+  ></div>
+
+  <div class="relative z-10 max-w-2xl text-center md:text-left">
+    <h1
+      class="text-[#2B1B12] font-extrabold leading-tight text-4xl md:text-6xl tracking-tight drop-shadow-sm"
+    >
+      Find Your
+      <span class="block text-[#8C7A6B] mt-1">Dream Apartment</span>
     </h1>
-    <p class="mt-6 text-gray-700 text-lg md:text-xl">
-      Explore our curated selection of exquisite properties tailored to your dream apartment vision.
+
+    <p class="mt-6 text-[#6B5B4D] text-lg md:text-xl max-w-lg mx-auto md:mx-0">
+      Discover handpicked properties designed for your comfort, style, and lifestyle. Start your
+      journey toward a better living space today.
     </p>
+
+    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+      <a
+        routerLink="/explore"
+        class="bg-[#2B1B12] text-white font-semibold px-8 py-3 rounded-full hover:bg-[#3B261A] transition-all duration-300 shadow-md"
+      >
+        Explore Listings
+      </a>
+      <a
+        routerLink="/new-post"
+        class="border-2 border-[#2B1B12] text-[#2B1B12] font-semibold px-8 py-3 rounded-full hover:bg-[#2B1B12] hover:text-white transition-all duration-300"
+      >
+        List Your Property
+      </a>
+    </div>
   </div>
 
-  <div class="w-full md:w-1/2 mt-10 md:mt-0">
-    <img src="assets/Landing/hero_image.png" alt="Modern Apartment" class="w-full max-w-md mx-auto md:max-w-none" />
+  <div class="relative z-10 w-full md:w-1/2 mt-10 md:mt-0 flex justify-center">
+    <div class="relative group">
+      <img
+        src="assets/Landing/hero_image.png"
+        alt="Modern Apartment"
+        class="w-full max-w-md md:max-w-lg rounded-3xl shadow-2xl transform group-hover:scale-105 transition-transform duration-500"
+      />
+      <div
+        class="absolute -bottom-6 -left-6 bg-white/90 backdrop-blur-md p-4 rounded-2xl shadow-md border border-[#EADFD5] text-left w-48"
+      >
+        <p class="text-[#2B1B12] font-semibold">Luxury Suite</p>
+        <p class="text-[#6B5B4D] text-sm">Starting from $950/mo</p>
+      </div>
+    </div>
   </div>
 </section>
-
-
-<app-explore></app-explore>

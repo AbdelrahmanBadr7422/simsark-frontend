@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { Explore } from "../../components/shared/explore/explore";
+import { Explore } from '../../components/shared/explore/explore';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [Explore],
+  imports: [RouterModule],
   templateUrl: './home.html',
 })
 export class Home {}
