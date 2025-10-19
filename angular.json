@@ -31,7 +31,7 @@
           },
           "configurations": {
             "production": {
-              "outputPath": "dist/my-angular-app",
+              "outputPath": "dist/simsark-frontend",
               "budgets": [
                 {
                   "type": "initial",
