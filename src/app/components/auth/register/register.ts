@@ -61,7 +61,7 @@ export class Register {
           localStorage.setItem('userRole', res.data.role);
         }
         this.isLoading = false;
-        this.router.navigate(['/home']);
+        this.router.navigate(['/explore']);
       },
       error: (err: RegisterResponse) => {
         this.isLoading = false;

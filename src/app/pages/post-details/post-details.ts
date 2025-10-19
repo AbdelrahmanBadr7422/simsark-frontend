@@ -1,7 +1,7 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Offer } from '../../services/offer';
 import { Post } from '../../services/post';
@@ -16,7 +16,7 @@ import { CreateOfferRequest, CreateOfferResponse } from '../../models/offerModel
 @Component({
   selector: 'app-post-details',
   standalone: true,
-  imports: [CommonModule, DatePipe, Payment, ReactiveFormsModule],
+  imports: [CommonModule, DatePipe, Payment, ReactiveFormsModule,RouterLink],
   templateUrl: './post-details.html',
 })
 export class PostDetails implements OnInit, OnDestroy {

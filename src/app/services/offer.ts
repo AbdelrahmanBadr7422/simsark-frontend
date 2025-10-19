@@ -9,6 +9,7 @@ import {
   CreateOfferResponse,
   RespondToOfferRequest,
   GetPostOffersResponse,
+  RespondToOfferResponse,
 } from '../models/offerModels';
 
 @Injectable({
@@ -27,9 +28,9 @@ export class Offer {
   }
 
   // Get Single Offer Service
-  respondToOffer(respond: RespondToOfferRequest): Observable<RespondToOfferRequest> {
+  respondToOffer(respond: RespondToOfferRequest): Observable<RespondToOfferResponse> {
     return this._httpClient
-      .patch<RespondToOfferRequest>(this.offerUrl, respond)
+      .patch<RespondToOfferResponse>(this.offerUrl, respond)
       .pipe(catchError(this._errorHandler.handleError));
   }
 
