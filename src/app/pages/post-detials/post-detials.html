@@ -1,32 +1,56 @@
-<div class="container mx-auto flex flex-wrap gap-4 p-4">
+<div class="container mx-auto px-4 py-10">
   @if (currentPost) {
-  <div class="w-full bg-white shadow rounded overflow-hidden">
-    @if(currentPost.images[0] != "string" || ''){
-    @for(img of currentPost.images;track $index ){
-    <img [src]="img" alt="Apartment image" class="w-full h-100 object-cover">
-    }
-    }@else {
-    <img src="../../../../../assets/background.jpg" [alt]="currentPost.propertyType" class="w-full h-100 object-cover">
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
+    <div class="w-full md:w-1/2 relative">
+      @if (currentPost.images && currentPost.images.length > 0 && currentPost.images[0] !==
+      'string') {
+      <div class="flex overflow-x-auto snap-x snap-mandatory">
+        @for (img of currentPost.images; track $index) {
+        <img
+          [src]="img"
+          alt="Property Image"
+          class="h-96 w-full object-cover snap-center flex-shrink-0"
+        />
+        }
+      </div>
+      } @else {
+      <img
+        src="assets/background.jpg"
+        alt="Default Property Image"
+        class="h-96 w-full object-cover"
+      />
+      }
+    </div>
 
-    }
+    <div class="w-full md:w-1/2 p-6 space-y-4">
+      <h2 class="text-3xl font-bold text-[#2B1B12]">
+        {{ currentPost.title || 'Untitled Property' }}
+      </h2>
+      <p class="text-gray-700 text-lg">
+        {{ currentPost.description || 'No description available.' }}
+      </p>
 
-    <div class="p-4">
-      <h3 class="text-2xl font-bold mb-2">
-      </h3>
-      <pre>{{currentPost | json}}</pre>
-      <ul class="space-y-1 text-xl text-gray-700">
-        <li><strong>Owner : {{currentPost.owner.email}}</strong></li>
-        <li><strong>Type of property : {{currentPost.propertyType}}</strong> </li>
-        <li><strong>Description : {{currentPost.description}}</strong> </li>
-        <li><strong>Area : {{currentPost.area}} m²</strong></li>
-        <li><strong>Rooms : {{currentPost.rooms}}</strong> </li>
-        <li><strong>Bathrooms : {{currentPost.bathrooms}}</strong> </li>
-        <li><strong>last Update : {{currentPost.updatedAt | date}}</strong> </li>
+      <ul class="text-gray-800 text-base space-y-1">
+        <li>
+          <strong>Owner:</strong>
+          {{ currentPost.owner?.email || 'Unknown Owner' }}
+        </li>
+        <li><strong>Type:</strong> {{ currentPost.propertyType || 'N/A' }}</li>
+        <li><strong>Area:</strong> {{ currentPost.area }} m²</li>
+        <li><strong>Rooms:</strong> {{ currentPost.rooms }}</li>
+        <li><strong>Bathrooms:</strong> {{ currentPost.bathrooms }}</li>
+        <li><strong>Last Updated:</strong> {{ currentPost.updatedAt | date : 'medium' }}</li>
       </ul>
-      <app-payment [moneyAmount]="currentPost.price">{{currentPost.price}}</app-payment>
 
+      <div class="pt-4">
+        <app-payment [moneyAmount]="currentPost.price"></app-payment>
+      </div>
     </div>
   </div>
-  }
 
+  } @else {
+  <div class="text-center py-20 text-gray-500">
+    <p class="text-2xl">Loading property details...</p>
+  </div>
+  }
 </div>

@@ -40,7 +40,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    canActivate: [authGuard],
+    canActivate: [],
     children: [
       {
         path: 'create-post',
