@@ -12,6 +12,6 @@
       "dest": "/index.html"
     }
   ],
-  "outputDirectory": "dist",
+  "outputDirectory": "dist/simsark-frontend",
   "framework": "angular"
 }
