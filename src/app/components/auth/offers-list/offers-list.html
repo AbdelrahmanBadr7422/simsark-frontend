@@ -1,0 +1,106 @@
+<div class="container mx-auto mt-6 px-4">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Offers</h2>
+
+  @if (isLoading()) {
+  <div class="flex justify-center py-10">
+    <div
+      class="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"
+    ></div>
+  </div>
+  } @else if (hasError()) {
+  <div class="text-center text-red-500 font-medium">
+    Failed to load offers. Please try again later.
+  </div>
+  } @else if (offers().length === 0) {
+  <div class="text-center text-gray-500 font-medium">No offers found for this post.</div>
+  } @else {
+  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    @for (offer of offers(); track offer._id) {
+    <div
+      class="relative border border-gray-200 rounded-2xl shadow-sm p-4 bg-white hover:shadow-md transition-all"
+    >
+      <button
+        type="button"
+        class="absolute top-2 right-2 p-1 bg-gray-100 border border-gray-300 rounded-full hover:bg-gray-200"
+        (click)="removeOffer(offer._id)"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="w-3 h-3"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M4.293 4.293a1 1 0 011.414 0L10 
+                8.586l4.293-4.293a1 1 0 
+                111.414 1.414L11.414 10l4.293 
+                4.293a1 1 0 01-1.414 
+                1.414L10 11.414l-4.293 
+                4.293a1 1 0 01-1.414-1.414L8.586 
+                10 4.293 5.707a1 1 0 010-1.414z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </button>
+
+      <div class="flex items-center gap-3">
+        <div
+          class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold uppercase"
+        >
+          {{ offer.customer.fname }}
+        </div>
+        <div class="flex-1">
+          <p class="font-semibold text-gray-800">
+            {{ offer.customer.fname }}
+          </p>
+          <p class="text-sm text-gray-500 truncate">
+            {{ offer.message }}
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-3 flex items-center justify-between text-sm text-gray-600">
+        <p>
+          <span class="font-medium text-green-600">{{ offer.amount | currency : 'USD' }}</span>
+        </p>
+        <p class="capitalize">
+          Status:
+          <span
+            class="px-2 py-0.5 text-xs rounded-full"
+            [ngClass]="{
+              'bg-yellow-100 text-yellow-800': offer.status === 'PENDING',
+              'bg-green-100 text-green-800': offer.status === 'ACCEPTED',
+              'bg-red-100 text-red-800': offer.status === 'REJECTED'
+            }"
+          >
+            {{ offer.status }}
+          </span>
+        </p>
+      </div>
+
+      @if (offer.status === 'PENDING') {
+      <div class="mt-4 flex gap-2">
+        <button
+          class="flex-1 bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition-all"
+          (click)="acceptOffer(offer._id)"
+        >
+          Accept
+        </button>
+        <button
+          class="flex-1 bg-red-500 text-white py-2 rounded-lg hover:bg-red-600 transition-all"
+          (click)="rejectOffer(offer._id)"
+        >
+          Reject
+        </button>
+      </div>
+      } @else {
+      <div class="mt-4 text-center text-sm text-gray-500 italic">
+        This offer has been {{ offer.status }}.
+      </div>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>

@@ -42,25 +42,3 @@ export interface RespondToOfferResponse {
 }
 
 export type GetPostOffersResponse = Offer[];
-/**
- * {
-    "_id": "68ef0148be1887094c0f1174",
-    "amount": 1,
-    "message": "test",
-    "status": "PENDING",
-    "customer": {
-      "_id": "68d7a368cd0e005ec9743f26",
-      "email": "osamaelsaeed@gmail.com",
-      "fname": "osama"
-    },
-    "seller": {
-      "_id": "68d7c10c27cceeba458b9ec4",
-      "email": "user@example.com",
-      "fname": "John"
-    },
-    "post": "68d7c367943f7487dc8dbd80",
-    "createdAt": "2025-10-15T02:04:56.973Z",
-    "updatedAt": "2025-10-15T02:04:56.973Z",
-    "__v": 0
-  }
- */

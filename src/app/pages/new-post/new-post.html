@@ -1,72 +1,77 @@
 <section class="min-h-screen flex flex-col lg:flex-row bg-[#F8F4F0]">
+  <!-- Left Progress Bar -->
   <div class="hidden lg:block w-2 bg-[#E5D5C5] relative">
-    <div
-      id="progressBar"
-      class="absolute left-0 top-0 w-full bg-[#2B1B12] rounded-r transition-all duration-300"
-      style="height: 0%"
-    ></div>
+    <div id="progressBar" class="absolute left-0 top-0 w-full bg-[#2B1B12] rounded-r transition-all duration-300" style="height: 0%"></div>
   </div>
 
+  <!-- Main Form Section -->
   <div class="flex-1 flex items-center justify-center px-6 md:px-12 py-12">
     <div class="w-full max-w-lg bg-white shadow-lg rounded-2xl p-8">
       <h2 class="text-3xl font-bold mb-8 text-center text-[#2B1B12]">Create New Post</h2>
 
       <form [formGroup]="postForm" (ngSubmit)="addNewPost()" class="space-y-6 overflow-y-auto">
+
+        <!-- Title -->
         <div class="relative">
           <input
             type="text"
             id="title"
             formControlName="title"
             placeholder=" "
-            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] focus:outline-none focus:border-[#2B1B12]"
           />
           <label
             for="title"
-            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B] peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]"
           >
             Title
           </label>
-          <div
-            *ngIf="postForm.get('title')?.touched && postForm.get('title')?.invalid"
-            class="text-red-600 text-sm mt-1"
-          >
-            Title is required.
-          </div>
+          @if(getFieldError('title')) {
+            <div class="text-red-600 text-sm mt-1">{{ getFieldError('title') }}</div>
+          }
         </div>
 
+        <!-- Description -->
         <div class="relative">
           <textarea
             id="description"
             formControlName="description"
             rows="3"
             placeholder=" "
-            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] focus:outline-none focus:border-[#2B1B12]"
           ></textarea>
           <label
             for="description"
-            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B] peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]"
           >
             Description
           </label>
+          @if(getFieldError('description')) {
+            <div class="text-red-600 text-sm mt-1">{{ getFieldError('description') }}</div>
+          }
         </div>
 
-        <div class="relative">
+        <!-- Address -->
+        <!-- <div class="relative">
           <input
             id="address"
             type="text"
-            placeholder=" "
             formControlName="address"
-            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder-transparent focus:outline-none focus:border-[#2B1B12]"
-            #addressInput
+            placeholder=" "
+            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] focus:outline-none focus:border-[#2B1B12]"
           />
           <label
             for="address"
-            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all duration-200 ease-in-out peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-[#8C7A6B] peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]"
+            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]"
           >
             Address
           </label>
-        </div>
+          @if(getFieldError('address')) {
+            <div class="text-red-600 text-sm mt-1">{{ getFieldError('address') }}</div>
+          }
+        </div> -->
 
+        <!-- Images -->
         <div>
           <label class="block mb-2 text-[#6B5B4D] text-sm font-medium">Upload Images</label>
           <input
@@ -77,14 +82,13 @@
             class="block w-full text-sm text-[#2B1B12] border border-[#B99F8A] rounded-lg cursor-pointer bg-[#F8F4F0] focus:outline-none"
           />
           <div class="flex flex-wrap gap-3 mt-3">
-            <img
-              *ngFor="let img of previewImages"
-              [src]="img"
-              class="w-24 h-24 rounded-lg object-cover shadow"
-            />
+            @for(img of previewImages; track $index) {
+              <img [src]="img" class="w-24 h-24 rounded-lg object-cover shadow" />
+            }
           </div>
         </div>
 
+        <!-- Property Info -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-[#6B5B4D] text-sm font-medium mb-1">Property Type</label>
@@ -98,6 +102,9 @@
               <option>Studio</option>
               <option>Land</option>
             </select>
+            @if(getFieldError('propertyType')) {
+              <div class="text-red-600 text-sm mt-1">{{ getFieldError('propertyType') }}</div>
+            }
           </div>
 
           <div>
@@ -107,6 +114,9 @@
               formControlName="price"
               class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
             />
+            @if(getFieldError('price')) {
+              <div class="text-red-600 text-sm mt-1">{{ getFieldError('price') }}</div>
+            }
           </div>
 
           <div>
@@ -116,6 +126,9 @@
               formControlName="area"
               class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
             />
+            @if(getFieldError('area')) {
+              <div class="text-red-600 text-sm mt-1">{{ getFieldError('area') }}</div>
+            }
           </div>
 
           <div>
@@ -125,6 +138,9 @@
               formControlName="rooms"
               class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
             />
+            @if(getFieldError('rooms')) {
+              <div class="text-red-600 text-sm mt-1">{{ getFieldError('rooms') }}</div>
+            }
           </div>
 
           <div>
@@ -134,18 +150,31 @@
               formControlName="bathrooms"
               class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
             />
+            @if(getFieldError('bathrooms')) {
+              <div class="text-red-600 text-sm mt-1">{{ getFieldError('bathrooms') }}</div>
+            }
           </div>
         </div>
 
-        <div *ngIf="serverErrorMsg" class="text-red-600 text-center">{{ serverErrorMsg }}</div>
-        <div *ngIf="successMessage" class="text-green-600 text-center">{{ successMessage }}</div>
+        <!-- Messages -->
+        @if(serverErrorMsg) {
+          <div class="text-red-600 text-center">{{ serverErrorMsg }}</div>
+        }
+        @if(successMessage) {
+          <div class="text-green-600 text-center">{{ successMessage }}</div>
+        }
 
+        <!-- Submit -->
         <button
           type="submit"
           [disabled]="postForm.invalid || isLoading"
           class="w-full bg-[#2B1B12] hover:bg-[#3b261a] transition-all text-white font-semibold py-3 rounded-lg disabled:opacity-50"
         >
-          Add Post
+          @if(isLoading) {
+            <span class="animate-pulse">Creating Post...</span>
+          } @else {
+            Add Post
+          }
         </button>
       </form>
     </div>

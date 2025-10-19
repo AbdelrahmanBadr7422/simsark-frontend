@@ -49,14 +49,19 @@ export const routes: Routes = [
       },
       {
         path: 'profile',
-        loadComponent: () => import('./pages/profile/profile').then((c) => c.Profile),
+        loadComponent: () => import('./components/auth/profile/profile').then((c) => c.Profile),
         title: 'Profile',
+      },
+      {
+        path: 'offers/:postId',
+        loadComponent: () => import('./components/auth/offers-list/offers-list').then((c) => c.OffersList),
+        title: 'Offers',
       },
     ],
   },
   {
     path: 'post/:postId',
-    loadComponent: () => import('./pages/post-detials/post-detials').then((c) => c.PostDetails),
+    loadComponent: () => import('./pages/post-details/post-details').then((c) => c.PostDetails),
     title: 'Post',
   },
   {

@@ -48,12 +48,7 @@ export class Login implements OnInit {
         this.loginStatusMsg = res.message;
 
         const role = res.data?.role;
-
-        if (role === UserRoleEnum.Seller) {
-          this.router.navigate(['/create-post']);
-        } else {
-          this.router.navigate(['/home']);
-        }
+          this.router.navigate(['/explore']);
       },
       error: (err: LoginResponse) => {
         this.isLoading = false;
