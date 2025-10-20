@@ -1,103 +1,233 @@
-@if (currentPost) {
-<div class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 md:p-10">
-  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-    <div>
-      <h1 class="text-4xl font-extrabold text-[#2B1B12]">${{ currentPost.price }}</h1>
-      <p class="text-lg text-gray-600 font-medium mt-1">
-        {{ currentPost.title }}
-      </p>
-    </div>
+        {{currentPost|json}}
+<div class="container mx-auto px-4 py-10">
+  @if (isLoading) {
+  <div class="text-center py-20 text-gray-500 text-xl">Loading property details...</div>
+  } @else if (hasError) {
+  <div class="text-center py-20 text-red-600 text-xl">Failed to load property details.</div>
+  } @else if (currentPost) {
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 md:p-10">
+    
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+      <div>
+        <h1 class="text-4xl font-extrabold text-[#2B1B12]">
+          ${{ currentPost.price | number : '1.0-0' }}
+        </h1>
+        <p class="text-lg text-gray-600 font-medium mt-1">
+          {{ currentPost.title }}
+        </p>
+      </div>
 
-    @if (!postOwner) {
-    <div class="flex items-center gap-3 w-full sm:w-auto">
-      <button
-        (click)="openOfferModal()"
-        class="bg-[#2B1B12] hover:bg-[#3b261a] text-white px-5 py-2 rounded-lg transition font-semibold"
+      @if (!postOwner) {
+      <div class="flex items-center gap-3 w-full sm:w-auto">
+        <button
+          (click)="openOfferModal()"
+          class="bg-[#2B1B12] hover:bg-[#3b261a] text-white px-5 py-2 rounded-lg transition font-semibold"
+        >
+          Make an Offer
+        </button>
+        <app-payment [moneyAmount]="currentPost.price" class="hidden sm:inline-block">
+          {{ currentPost.price | currency }}
+        </app-payment>
+      </div>
+      } @else {
+      <a
+        [routerLink]="['/offers/', currentPost._id]"
+        class="font-bold text-[#2B1B12] hover:underline text-sm sm:text-base"
       >
-        Make an Offer
-      </button>
+        Show Offers
+      </a>
+      }
     </div>
-    } @else {
-    <a
-      [routerLink]="['/offers/', currentPost._id]"
-      class="font-bold text-[#2B1B12] hover:underline text-sm sm:text-base"
-    >
-      Show Offers
-    </a>
-    }
-  </div>
 
-  <div
-    class="relative w-full border border-gray-200 rounded-xl overflow-hidden shadow-sm mb-8 bg-gray-50"
-  >
-    <div class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth">
-      @for (img of currentPost.images; track $index) {
-      <img
-        [src]="img"
-        alt="Property Image"
-        class="h-80 w-full object-cover snap-center flex-shrink-0"
-      />
+    
+    <div
+      class="relative w-full border border-gray-200 rounded-xl overflow-hidden shadow-sm mb-8 bg-gray-50"
+    >
+      <div class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth">
+        @for (img of currentPost.images; track $index) {
+        <img
+          [src]="img"
+          alt="Property Image"
+          class="h-80 w-full object-cover snap-center flex-shrink-0"
+        />
+        }
+      </div>
+    </div>
+
+    
+    <div>
+      <h2 class="text-2xl font-bold text-[#2B1B12] mb-3">Property Details</h2>
+      <p class="text-gray-700 text-lg leading-relaxed mb-6">
+        {{ currentPost.description || 'No description available.' }}
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 text-gray-800 text-base">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-user text-[#2B1B12]"></i>
+          <strong class="font-semibold text-gray-700">Owner:</strong>
+          {{ currentPost.owner.email || 'Unknown Owner' }}
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-building text-[#2B1B12]"></i>
+          <strong class="font-semibold text-gray-700">Type:</strong>
+          {{ currentPost.propertyType || 'N/A' }}
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-ruler-combined text-[#2B1B12]"></i>
+          <strong class="font-semibold text-gray-700">Area:</strong>
+          {{ currentPost.area }} m²
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-bed text-[#2B1B12]"></i>
+          <strong class="font-semibold text-gray-700">Rooms:</strong>
+          {{ currentPost.rooms }}
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-bath text-[#2B1B12]"></i>
+          <strong class="font-semibold text-gray-700">Bathrooms:</strong>
+          {{ currentPost.bathrooms }}
+        </div>
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-clock text-[#2B1B12]"></i>
+          <strong class="font-semibold text-gray-700">Last Updated:</strong>
+          {{ currentPost.updatedAt | date : 'medium' }}
+        </div>
+      </div>
+
+      @if (postOwner) {
+      <div class="pt-8 flex flex-col sm:flex-row gap-3 justify-between">
+        <button
+          (click)="openEditModal()"
+          class="flex-1 bg-amber-700 hover:bg-amber-800 text-white py-2 rounded transition"
+        >
+          Edit
+        </button>
+        <button
+          (click)="confirmDelete()"
+          class="flex-1 bg-red-700 hover:bg-red-800 text-white py-2 rounded transition"
+        >
+          Delete
+        </button>
+      </div>
       }
     </div>
   </div>
+  }
+</div>
 
-  <div>
-    <h2 class="text-2xl font-bold text-[#2B1B12] mb-3">Property Details</h2>
-    <p class="text-gray-700 text-lg leading-relaxed mb-6">
-      {{ currentPost.description || 'No description available.' }}
-    </p>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 text-gray-800 text-base">
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-user text-[#2B1B12]"></i>
-        <strong class="font-semibold text-gray-700">Owner:</strong>
-        {{ currentPost.owner.email || 'Unknown Owner' }}
-      </div>
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-building text-[#2B1B12]"></i>
-        <strong class="font-semibold text-gray-700">Type:</strong>
-        {{ currentPost.propertyType || 'N/A' }}
-      </div>
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-ruler-combined text-[#2B1B12]"></i>
-        <strong class="font-semibold text-gray-700">Area:</strong>
-        {{ currentPost.area }} m²
-      </div>
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-bed text-[#2B1B12]"></i>
-        <strong class="font-semibold text-gray-700">Rooms:</strong>
-        {{ currentPost.rooms }}
-      </div>
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-bath text-[#2B1B12]"></i>
-        <strong class="font-semibold text-gray-700">Bathrooms:</strong>
-        {{ currentPost.bathrooms }}
-      </div>
-      <div class="flex items-center gap-2">
-        <i class="fa-solid fa-clock text-[#2B1B12]"></i>
-        <strong class="font-semibold text-gray-700">Last Updated:</strong>
-        {{ currentPost.updatedAt | date : 'medium' }}
-      </div>
-    </div>
+@if (showToast) {
+<div
+  class="fixed top-5 right-5 px-4 py-2 rounded-lg text-white shadow-lg transition-opacity duration-500"
+  [class.bg-green-600]="toastType === 'success'"
+  [class.bg-red-600]="toastType === 'error'"
+>
+  {{ toastMessage }}
+</div>
+}
 
-    @if (postOwner) {
-    <div class="pt-8 flex flex-col sm:flex-row gap-3 justify-between">
-      <button
-        (click)="openEditModal()"
-        class="flex-1 bg-amber-700 hover:bg-amber-800 text-white py-2 rounded transition"
-      >
-        Edit
+
+@if (showDeleteConfirm) {
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-lg p-6 w-80 text-center shadow-lg">
+    <h3 class="text-lg font-semibold mb-4">Are you sure?</h3>
+    <p class="text-gray-600 mb-6">This action cannot be undone.</p>
+    <div class="flex justify-between">
+      <button (click)="cancelDelete()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg">
+        Cancel
       </button>
       <button
-        (click)="confirmDelete()"
-        class="flex-1 bg-red-700 hover:bg-red-800 text-white py-2 rounded transition"
+        (click)="deletePost()"
+        class="px-4 py-2 bg-red-700 hover:bg-red-800 text-white rounded-lg"
       >
         Delete
       </button>
     </div>
-    }
   </div>
 </div>
+}
+
+
+@if (showEditModal) {
+<div class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+  <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-8">
+    <h3 class="text-2xl font-bold text-center mb-6">Edit Post</h3>
+
+    <form [formGroup]="updateForm" (ngSubmit)="savePostUpdate()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Title</label>
+        <input
+          type="text"
+          formControlName="title"
+          class="w-full border rounded p-2 focus:outline-none focus:ring focus:ring-amber-300"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Description</label>
+        <textarea
+          rows="3"
+          formControlName="description"
+          class="w-full border rounded p-2 focus:outline-none focus:ring focus:ring-amber-300"
+        ></textarea>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Price ($)</label>
+          <input
+            type="number"
+            formControlName="price"
+            class="w-full border rounded p-2 focus:outline-none focus:ring focus:ring-amber-300"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Area (m²)</label>
+          <input
+            type="number"
+            formControlName="area"
+            class="w-full border rounded p-2 focus:outline-none focus:ring focus:ring-amber-300"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Rooms</label>
+          <input
+            type="number"
+            formControlName="rooms"
+            class="w-full border rounded p-2 focus:outline-none focus:ring focus:ring-amber-300"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Bathrooms</label>
+          <input
+            type="number"
+            formControlName="bathrooms"
+            class="w-full border rounded p-2 focus:outline-none focus:ring focus:ring-amber-300"
+          />
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-4 pt-4">
+        <button
+          type="button"
+          (click)="closeEditModal()"
+          class="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded-lg"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          [disabled]="updateForm.invalid"
+          class="px-4 py-2 bg-amber-700 hover:bg-amber-800 text-white rounded-lg disabled:opacity-50"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+}
+
 
 @if (showOfferModal) {
 <div class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -133,6 +263,7 @@
         </button>
         <button
           type="submit"
+          [disabled]="offerForm.invalid"
           class="px-4 py-2 bg-[#2B1B12] hover:bg-[#3b261a] text-white rounded-lg disabled:opacity-50"
         >
           Submit
@@ -141,4 +272,4 @@
     </form>
   </div>
 </div>
-} }
+}
