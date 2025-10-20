@@ -31,9 +31,16 @@ export const routes: Routes = [
       },
 
       {
-        path: 'reset-password',
+        path: 'forget-password',
         loadComponent: () =>
           import('./components/auth/forget-pass/forget-pass').then((c) => c.ForgetPass),
+        title: 'Forget Password',
+      },
+
+      {
+        path: 'reset-password/:token',
+        loadComponent: () =>
+          import('./components/auth/reset-pass/reset-pass').then((c) => c.ResetPass),
         title: 'Reset Password',
       },
     ],
@@ -54,7 +61,8 @@ export const routes: Routes = [
       },
       {
         path: 'offers/:postId',
-        loadComponent: () => import('./components/auth/offers-list/offers-list').then((c) => c.OffersList),
+        loadComponent: () =>
+          import('./components/auth/offers-list/offers-list').then((c) => c.OffersList),
         title: 'Offers',
       },
     ],

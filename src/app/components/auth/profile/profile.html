@@ -1,60 +1,110 @@
-<section class="max-w-4xl mx-auto p-6 bg-white shadow rounded-lg">
-  <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+<section
+  class="max-w-3xl mx-auto p-8 bg-white shadow-lg rounded-2xl transition-all duration-500 hover:shadow-xl"
+>
+  <h2 class="text-3xl font-extrabold text-gray-800 mb-10 text-center border-b pb-4">
     {{ userData.fname }} {{ userData.lname }}'s Profile
   </h2>
 
-  <div class="space-y-5">
+  <div class="space-y-6">
     @for (field of fields; track $index) {
-    <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
-      <label for="{{ field.key }}" class="block text-sm font-medium text-gray-700 sm:w-32">
+    <div
+      class="flex flex-col sm:flex-row sm:items-center sm:gap-4 bg-gray-50 rounded-xl p-4 hover:bg-gray-100 transition-colors"
+    >
+      <label for="{{ field.key }}" class="block text-sm font-semibold text-gray-700 sm:w-40">
         {{ field.label }}
       </label>
 
       @if (field.key === 'password') {
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full">
-        <input
-          id="{{ field.key }}"
-          type="password"
-          #passInput
-          class="flex-1 p-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-800"
-          [placeholder]="resetToggle ? 'Enter new password' : '********'"
-          [readonly]="resetToggle"
-          [disabled]="resetToggle"
-        />
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full">
+        <div class="relative flex-1 w-full">
+          <input
+            id="{{ field.key }}"
+            [type]="showPassword ? 'text' : 'password'"
+            #passInput
+            class="w-full p-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-800 transition-all duration-200 disabled:bg-gray-100"
+            [placeholder]="resetToggle ? 'Enter new password' : ''"
+            [readonly]="resetToggle"
+            [disabled]="resetToggle"
+          />
+
+          <button
+            type="button"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+            (click)="toggleShowPassword()"
+            [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
+          >
+            <svg
+              *ngIf="!showPassword"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+              />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+
+            <svg
+              *ngIf="showPassword"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              class="w-5 h-5"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3 3l18 18M10.477 10.477A3 3 0 0112 9c1.657 0 3 1.343 3 3 0 .523-.134 1.012-.372 1.44M6.938 6.938C4.677 8.447 3.2 10.639 2.458 12c1.274 4.057 5.064 7 9.542 7 1.696 0 3.299-.39 4.73-1.083"
+              />
+            </svg>
+          </button>
+        </div>
 
         @if (resetToggle) {
         <button
           type="button"
           (click)="toggleResetBtn()"
-          class="text-blue-600 font-semibold hover:underline"
+          class="text-blue-600 font-medium hover:text-blue-800 transition-colors"
         >
           Reset Password?
         </button>
         } @else {
-        <button
-          type="button"
-          (click)="saveNewPassword(passInput.value)"
-          class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
-        >
-          Save
-        </button>
-        <button
-          type="button"
-          (click)="cancelReset()"
-          class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition"
-        >
-          Cancel
-        </button>
+        <div class="flex gap-2">
+          <button
+            type="button"
+            (click)="saveNewPassword(passInput.value)"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 active:scale-95 transition-all duration-200 shadow-sm"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            (click)="cancelReset()"
+            class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 active:scale-95 transition-all duration-200"
+          >
+            Cancel
+          </button>
+        </div>
         }
       </div>
 
       @if (passwordError) {
-      <p class="text-sm text-red-600 mt-1 ml-1">{{ passwordError }}</p>
+      <p class="text-sm text-red-600 mt-2 ml-1 animate-fadeIn">
+        {{ passwordError }}
+      </p>
       } } @else {
       <input
         id="{{ field.key }}"
         type="text"
-        class="flex-1 p-2 bg-gray-100 border rounded-md text-gray-700"
+        class="flex-1 p-2.5 bg-gray-100 border border-gray-300 rounded-lg text-gray-700 cursor-not-allowed"
         [value]="field.value"
         readonly
         disabled
@@ -66,7 +116,7 @@
 
   @if (resetPassMsg) {
   <div
-    class="mt-6 p-3 rounded text-sm font-medium"
+    class="mt-8 p-4 rounded-lg text-sm font-medium text-center animate-fadeIn"
     [class.bg-green-100]="!resetError"
     [class.text-green-800]="!resetError"
     [class.bg-red-100]="resetError"

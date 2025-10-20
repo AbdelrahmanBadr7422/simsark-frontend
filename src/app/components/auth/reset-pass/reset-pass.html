@@ -1,0 +1,130 @@
+<section class="flex flex-col lg:flex-row text-[#2B1B12]" style="height: calc(100vh - 88px)">
+  <div
+    class="lg:flex w-full lg:w-1/2 hidden bg-cover bg-center relative items-center"
+    style="background-image: url('../../../../assets/Landing/hero_image.png')"
+  ></div>
+
+  <div class="w-full lg:w-1/2 flex items-center justify-center px-6 sm:px-10 md:px-16">
+    <div class="w-full max-w-md py-10">
+      <h2 class="text-3xl font-bold mb-8 text-center">Reset Your Password</h2>
+
+      <form [formGroup]="resetForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <!-- New Password -->
+        <div class="relative">
+          <label for="password" class="block mb-2 text-[#6B5B4D] text-sm font-medium">
+            New Password
+          </label>
+
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            formControlName="password"
+            class="w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder:text-[#8C7A6B] focus:outline-none focus:border-[#2B1B12]"
+            placeholder="Enter new password"
+          />
+
+          <!-- Eye icon -->
+          <svg
+            (click)="togglePasswordVisibility()"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-5 h-5 absolute right-2 top-11 text-gray-600 cursor-pointer"
+          >
+            <path
+              *ngIf="!showPassword"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.374 7.24 19.5 12 19.5c4.76 0 8.774-3.126 10.066-7.5A10.45 10.45 0 0012 4.5c-1.732 0-3.368.41-4.82 1.138M3 3l18 18"
+            />
+            <path
+              *ngIf="showPassword"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M2.458 12C3.732 7.64 7.374 4.5 12 4.5c4.626 0 8.268 3.14 9.542 7.5-1.274 4.36-4.916 7.5-9.542 7.5-4.626 0-8.268-3.14-9.542-7.5z"
+            />
+          </svg>
+
+          @if (resetForm.get('password')?.touched && resetForm.get('password')?.invalid) {
+          <div class="text-red-600 text-sm mt-1">
+            <div>Password must be at least 8 characters.</div>
+          </div>
+          }
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="relative">
+          <label for="confirmPassword" class="block mb-2 text-[#6B5B4D] text-sm font-medium">
+            Confirm Password
+          </label>
+
+          <input
+            type="password"
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            class="w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] placeholder:text-[#8C7A6B] focus:outline-none focus:border-[#2B1B12]"
+            placeholder="Confirm your password"
+          />
+
+          @if (resetForm.get('confirmPassword')?.touched && resetForm.errors?.['mismatch']) {
+          <div class="text-red-600 text-sm mt-1">
+            <div>Passwords do not match.</div>
+          </div>
+          }
+        </div>
+
+        <!-- Feedback -->
+        @if (serverErrorMsg) {
+        <div class="text-red-600 text-center mb-3 font-medium">
+          {{ serverErrorMsg }}
+        </div>
+        } @if (successMsg && !serverErrorMsg) {
+        <div class="text-green-600 text-center mb-3 font-medium">
+          {{ successMsg }}
+        </div>
+        }
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          [disabled]="resetForm.invalid || isLoading"
+          class="w-full bg-[#2B1B12] hover:bg-[#3B261A] transition-all text-white font-semibold py-3 rounded-lg flex justify-center items-center gap-2 disabled:opacity-50"
+        >
+          @if (isLoading) {
+          <svg
+            class="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+          <span>Resetting...</span>
+          } @else {
+          <span>Reset Password</span>
+          }
+        </button>
+      </form>
+
+      <div class="mt-6 text-center text-sm text-[#4B4B4B]">
+        <a routerLink="/auth/login" class="text-[#2B1B12] font-semibold hover:underline">
+          Back to login
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

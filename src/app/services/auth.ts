@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { BehaviorSubject, catchError, Observable, tap } from 'rxjs';
 
@@ -94,7 +94,6 @@ export class Auth {
       );
   }
 
-  // logout
   logout(): void {
     localStorage.removeItem('authToken');
     localStorage.removeItem('userRole');
@@ -104,18 +103,21 @@ export class Auth {
     this.currentUserSubject.next(null);
   }
 
-  //ForgetPass Service
   forgetPassService(email: string): Observable<PasswordResponse> {
     return this._httpClient
       .post<PasswordResponse>(`${this.authUrl}/forgotPassword`, { email: email })
       .pipe(catchError(this._errorHandler.handleError));
   }
 
-  //ResetPass Service
-  resetPassService(pass: string): Observable<PasswordResponse> {
-    const token = localStorage.getItem('authToken');
+  resetPassService(pass: string, token: string): Observable<PasswordResponse> {
     return this._httpClient
       .patch<PasswordResponse>(`${this.authUrl}/resetPassword/${token}`, { password: pass })
+      .pipe(catchError(this._errorHandler.handleError));
+  }
+
+  changePassService(pass: string): Observable<PasswordResponse> {
+    return this._httpClient
+      .patch<PasswordResponse>(`${this.authUrl}/changePassword`, { password: pass })
       .pipe(catchError(this._errorHandler.handleError));
   }
 }

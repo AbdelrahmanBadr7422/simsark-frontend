@@ -26,7 +26,6 @@ export class Offer {
       .pipe(catchError(this._errorHandler.handleError));
   }
 
-  // Get Single Offer Service
   respondToOffer(respond: RespondToOfferRequest): Observable<RespondToOfferResponse> {
     return this._httpClient
       .patch<RespondToOfferResponse>(this.offerUrl, respond)
