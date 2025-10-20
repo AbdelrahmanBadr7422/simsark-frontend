@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    { "src": "dist/simsark-frontend/browser/index.html", "use": "@vercel/static" }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "outputDirectory": "dist/simsark-frontend",
-  "framework": "angular"
+  "builds": [{ "src": "dist/simsark-frontend/browser/**", "use": "@vercel/static" }],
+  "routes": [{ "src": "/(.*)", "dest": "/index.html" }]
 }
