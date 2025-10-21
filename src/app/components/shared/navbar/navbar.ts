@@ -32,4 +32,7 @@ export class Navbar {
     this.dropdownOpen = false; // optional — close dropdown on logout
     this.router.navigate(['/home']);
   }
+  closeMenu() {
+    this.menuOpen = false;
+  }
 }
