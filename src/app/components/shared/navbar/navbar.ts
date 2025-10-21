@@ -21,4 +21,7 @@ export class Navbar {
     this.authService.logout();
     this.router.navigate(['/home']);
   }
+  closeMenu() {
+    this.menuOpen = false;
+  }
 }
