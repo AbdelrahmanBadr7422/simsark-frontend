@@ -27,9 +27,9 @@ export class Post {
       .get<GetPostsResponse>(this.postUrl)
       .pipe(catchError(this._errorHandler.handleError));
   }
-  createPost(post: CreatePostRequest): Observable<CreatePostResponse> {
+  createPost(postData: FormData): Observable<CreatePostResponse> {
     return this._httpClient
-      .post<CreatePostResponse>(this.postUrl, post)
+      .post<CreatePostResponse>(this.postUrl, postData)
       .pipe(catchError(this._errorHandler.handleError));
   }
   getSinglePost(postId: string): Observable<GetPostByIdResponse> {
@@ -37,9 +37,9 @@ export class Post {
       .get<GetPostByIdResponse>(`${this.postUrl}/${postId}`)
       .pipe(catchError(this._errorHandler.handleError));
   }
-  updatePost(postId: string, post: updatePostRequest): Observable<UpdatePostResponse> {
+  updatePostFormData(postId: string, data: FormData): Observable<UpdatePostResponse> {
     return this._httpClient
-      .put<UpdatePostResponse>(`${this.postUrl}/${postId}`, post)
+      .put<UpdatePostResponse>(`${this.postUrl}/${postId}`, data)
       .pipe(catchError(this._errorHandler.handleError));
   }
   deletePost(postId: string): Observable<DeletePostResponse> {

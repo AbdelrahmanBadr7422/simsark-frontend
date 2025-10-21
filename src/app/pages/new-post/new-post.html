@@ -1,7 +1,11 @@
 <section class="min-h-screen flex flex-col lg:flex-row bg-[#F8F4F0]">
   <!-- Left Progress Bar -->
   <div class="hidden lg:block w-2 bg-[#E5D5C5] relative">
-    <div id="progressBar" class="absolute left-0 top-0 w-full bg-[#2B1B12] rounded-r transition-all duration-300" style="height: 0%"></div>
+    <div
+      id="progressBar"
+      class="absolute left-0 top-0 w-full bg-[#2B1B12] rounded-r transition-all duration-300"
+      style="height: 0%"
+    ></div>
   </div>
 
   <!-- Main Form Section -->
@@ -10,7 +14,6 @@
       <h2 class="text-3xl font-bold mb-8 text-center text-[#2B1B12]">Create New Post</h2>
 
       <form [formGroup]="postForm" (ngSubmit)="addNewPost()" class="space-y-6 overflow-y-auto">
-
         <!-- Title -->
         <div class="relative">
           <input
@@ -27,7 +30,7 @@
             Title
           </label>
           @if(getFieldError('title')) {
-            <div class="text-red-600 text-sm mt-1">{{ getFieldError('title') }}</div>
+          <div class="text-red-600 text-sm mt-1">{{ getFieldError('title') }}</div>
           }
         </div>
 
@@ -47,12 +50,12 @@
             Description
           </label>
           @if(getFieldError('description')) {
-            <div class="text-red-600 text-sm mt-1">{{ getFieldError('description') }}</div>
+          <div class="text-red-600 text-sm mt-1">{{ getFieldError('description') }}</div>
           }
         </div>
 
         <!-- Address -->
-        <!-- <div class="relative">
+        <div class="relative">
           <input
             id="address"
             type="text"
@@ -67,9 +70,9 @@
             Address
           </label>
           @if(getFieldError('address')) {
-            <div class="text-red-600 text-sm mt-1">{{ getFieldError('address') }}</div>
+          <div class="text-red-600 text-sm mt-1">{{ getFieldError('address') }}</div>
           }
-        </div> -->
+        </div>
 
         <!-- Images -->
         <div>
@@ -82,10 +85,27 @@
             class="block w-full text-sm text-[#2B1B12] border border-[#B99F8A] rounded-lg cursor-pointer bg-[#F8F4F0] focus:outline-none"
           />
           <div class="flex flex-wrap gap-3 mt-3">
-            @for(img of previewImages; track $index) {
+            @for (img of previewImages; track $index) {
+            <div class="relative">
               <img [src]="img" class="w-24 h-24 rounded-lg object-cover shadow" />
+              <button
+                type="button"
+                (click)="removeImage($index)"
+                class="cursor-pointer absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+              >
+                ×
+              </button>
+            </div>
             }
           </div>
+          <button
+            *ngIf="previewImages.length"
+            type="button"
+            (click)="clearImages()"
+            class="cursor-pointer mt-2 text-sm text-red-600 underline"
+          >
+            Remove all images
+          </button>
         </div>
 
         <!-- Property Info -->
@@ -103,7 +123,7 @@
               <option>Land</option>
             </select>
             @if(getFieldError('propertyType')) {
-              <div class="text-red-600 text-sm mt-1">{{ getFieldError('propertyType') }}</div>
+            <div class="text-red-600 text-sm mt-1">{{ getFieldError('propertyType') }}</div>
             }
           </div>
 
@@ -115,7 +135,7 @@
               class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
             />
             @if(getFieldError('price')) {
-              <div class="text-red-600 text-sm mt-1">{{ getFieldError('price') }}</div>
+            <div class="text-red-600 text-sm mt-1">{{ getFieldError('price') }}</div>
             }
           </div>
 
@@ -127,7 +147,7 @@
               class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
             />
             @if(getFieldError('area')) {
-              <div class="text-red-600 text-sm mt-1">{{ getFieldError('area') }}</div>
+            <div class="text-red-600 text-sm mt-1">{{ getFieldError('area') }}</div>
             }
           </div>
 
@@ -139,7 +159,7 @@
               class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
             />
             @if(getFieldError('rooms')) {
-              <div class="text-red-600 text-sm mt-1">{{ getFieldError('rooms') }}</div>
+            <div class="text-red-600 text-sm mt-1">{{ getFieldError('rooms') }}</div>
             }
           </div>
 
@@ -151,17 +171,16 @@
               class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
             />
             @if(getFieldError('bathrooms')) {
-              <div class="text-red-600 text-sm mt-1">{{ getFieldError('bathrooms') }}</div>
+            <div class="text-red-600 text-sm mt-1">{{ getFieldError('bathrooms') }}</div>
             }
           </div>
         </div>
 
         <!-- Messages -->
         @if(serverErrorMsg) {
-          <div class="text-red-600 text-center">{{ serverErrorMsg }}</div>
-        }
-        @if(successMessage) {
-          <div class="text-green-600 text-center">{{ successMessage }}</div>
+        <div class="text-red-600 text-center">{{ serverErrorMsg }}</div>
+        } @if(successMessage) {
+        <div class="text-green-600 text-center">{{ successMessage }}</div>
         }
 
         <!-- Submit -->
@@ -171,10 +190,8 @@
           class="w-full bg-[#2B1B12] hover:bg-[#3b261a] transition-all text-white font-semibold py-3 rounded-lg disabled:opacity-50"
         >
           @if(isLoading) {
-            <span class="animate-pulse">Creating Post...</span>
-          } @else {
-            Add Post
-          }
+          <span class="animate-pulse">Creating Post...</span>
+          } @else { Add Post }
         </button>
       </form>
     </div>
