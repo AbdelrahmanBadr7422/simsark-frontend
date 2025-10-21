@@ -1,11 +1,9 @@
-<div class="w-full bg-[#2B1B12] hover:bg-[#3b261a] text-white">
-  <button
-    (click)="makePayment(moneyAmount)"
-    [disabled]="loading"
-    class="w-full text-white py-2 rounded disabled:opacity-50"
-  >
-    @if (loading) {
-    <span class="animate-spin mr-2">🔄</span> Processing... } @else { Pay $<ng-content></ng-content>
-    }
-  </button>
-</div>
+<button
+  (click)="makePayment(moneyAmount)"
+  [disabled]="loading"
+  class="w-full py-2 bg-[#2B1B12] hover:bg-[#3b261a] text-white rounded transition"
+>
+  @if (loading) {
+  <span class="animate-spin mr-2">🔄</span> Processing... } @else { Pay $<ng-content></ng-content>
+  }
+</button>

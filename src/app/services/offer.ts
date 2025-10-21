@@ -10,6 +10,8 @@ import {
   RespondToOfferRequest,
   GetPostOffersResponse,
   RespondToOfferResponse,
+  CustomerOffersResponse,
+  SellerOffersResponse
 } from '../models/offerModels';
 
 @Injectable({
@@ -35,6 +37,18 @@ export class Offer {
   getAllOffersForPost(postId: string): Observable<GetPostOffersResponse> {
     return this._httpClient
       .get<GetPostOffersResponse>(`${this.offerUrl}/post/${postId}`)
+      .pipe(catchError(this._errorHandler.handleError));
+  }
+
+  getAllOffersForCustomer(): Observable<CustomerOffersResponse> {
+    return this._httpClient
+      .get<CustomerOffersResponse>(`${this.offerUrl}/my`)
+      .pipe(catchError(this._errorHandler.handleError));
+  }
+
+  getAllOffersForSeller(): Observable<SellerOffersResponse> {
+    return this._httpClient
+      .get<SellerOffersResponse>(`${this.offerUrl}/seller`)
       .pipe(catchError(this._errorHandler.handleError));
   }
 }

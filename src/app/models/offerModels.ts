@@ -7,6 +7,24 @@ export interface UserSummary {
   fname: string;
   email: string;
 }
+export type PostSummaryOrId =
+  | string
+  | {
+      _id: string;
+      title: string;
+      description: string;
+      price: number;
+      propertyType: string;
+      area: number;
+      rooms: number;
+      bathrooms: number;
+      images: string[];
+      owner: string;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    };
+
 export interface Offer {
   _id: string;
   amount: number;
@@ -14,11 +32,10 @@ export interface Offer {
   status: OfferStatus;
   customer: UserSummary;
   seller: UserSummary;
-  post: string;
+  post: PostSummaryOrId;
   createdAt?: string;
   updatedAt?: string;
   __v: number;
-
 }
 
 export interface CreateOfferRequest {
@@ -42,3 +59,79 @@ export interface RespondToOfferResponse {
 }
 
 export type GetPostOffersResponse = Offer[];
+
+export interface CustomerOffersResponse {
+  status: ApiStatus;
+  data: {
+    _id: string;
+    amount: number;
+    message: string;
+    status: OfferStatus;
+    customer: string; 
+    seller: {
+      _id: string;
+      email: string;
+      password: string;
+      fname: string;
+      lname: string;
+      role: string;
+      __v: number;
+    };
+    post: {
+      _id: string;
+      title: string;
+      description: string;
+      price: number;
+      propertyType: string;
+      area: number;
+      rooms: number;
+      bathrooms: number;
+      images: string[];
+      owner: string;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    };
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }[];
+}
+
+export interface SellerOffersResponse {
+  status: ApiStatus;
+  data: {
+    _id: string;
+    amount: number;
+    message: string;
+    status: OfferStatus;
+    customer: {
+      _id: string;
+      email: string;
+      password: string;
+      fname: string;
+      lname: string;
+      role: string;
+      __v: number;
+    };
+    seller: string;
+    post: {
+      _id: string;
+      title: string;
+      description: string;
+      price: number;
+      propertyType: string;
+      area: number;
+      rooms: number;
+      bathrooms: number;
+      images: string[];
+      owner: string;
+      createdAt: string;
+      updatedAt: string;
+      __v: number;
+    };
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
+  }[];
+}

@@ -45,7 +45,6 @@ export class PostDetails implements OnInit, OnDestroy {
     area: [0, [Validators.required, Validators.min(1)]],
     rooms: [0, [Validators.required, Validators.min(1)]],
     bathrooms: [0, [Validators.required, Validators.min(1)]],
-    address: ['', [Validators.required, Validators.minLength(5)]], // <-- added
   });
 
   offerForm = this.fb.group({
@@ -81,10 +80,7 @@ export class PostDetails implements OnInit, OnDestroy {
           this.isLoading = false;
           const userId = localStorage.getItem('userData');
           this.postOwner = !!userId && userId.includes(this.currentPost.owner._id);
-          this.updateForm.patchValue({
-            ...this.currentPost,
-            address: this.currentPost.address || '', // <-- added
-          });
+          this.updateForm.patchValue(this.currentPost);
         },
         error: () => {
           this.hasError = true;
@@ -113,7 +109,7 @@ export class PostDetails implements OnInit, OnDestroy {
     this.offerService.addOfferService(offer).subscribe({
       next: (res: CreateOfferResponse) => {
         this.showOfferModal = false;
-        this.showToastMessage('Offer sent successfully!', 'success');
+        this.showToastMessage(' Offer sent successfully!', 'success');
       },
       error: () => this.showToastMessage('Failed to send offer', 'error'),
     });
@@ -138,7 +134,7 @@ export class PostDetails implements OnInit, OnDestroy {
           this.showToastMessage('Post deleted successfully 🗑️', 'success');
           setTimeout(() => window.history.back(), 1500);
         },
-        error: () => this.showToastMessage('Failed to delete post', 'error'),
+        error: () => this.showToastMessage('Failed to delete post ', 'error'),
       });
   }
 
@@ -152,29 +148,20 @@ export class PostDetails implements OnInit, OnDestroy {
 
   savePostUpdate() {
     if (this.updateForm.invalid || !this.currentPost) return;
-
-    const formData = new FormData();
-    const form = this.updateForm.value;
-
-    formData.append('title', form.title!);
-    formData.append('description', form.description!);
-    formData.append('price', form.price!.toString());
-    formData.append('area', form.area!.toString());
-    formData.append('rooms', form.rooms!.toString());
-    formData.append('bathrooms', form.bathrooms!.toString());
-    formData.append('address', form.address!); // <-- added
-    formData.append('propertyType', this.currentPost.propertyType);
-
+    const body: CreatePostRequest = {
+      ...this.updateForm.value,
+      propertyType: this.currentPost.propertyType,
+    } as any;
     this.postService
-      .updatePostFormData(this.currentPost._id, formData)
+      .updatePost(this.currentPost._id, body)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: UpdatePostResponse) => {
           this.currentPost = res.data;
           this.showEditModal = false;
-          this.showToastMessage('Post updated successfully!', 'success');
+          this.showToastMessage(' Post updated successfully!', 'success');
         },
-        error: () => this.showToastMessage('Failed to update post', 'error'),
+        error: () => this.showToastMessage('Failed to update post ', 'error'),
       });
   }
 

@@ -22,7 +22,7 @@
             [type]="showPassword ? 'text' : 'password'"
             #passInput
             class="w-full p-2.5 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-gray-800 transition-all duration-200 disabled:bg-gray-100"
-            [placeholder]="resetToggle ? 'Enter new password' : ''"
+            [placeholder]="resetToggle ? '*************' : ''"
             [readonly]="resetToggle"
             [disabled]="resetToggle"
           />
@@ -34,7 +34,7 @@
             [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
           >
             <svg
-              *ngIf="!showPassword"
+              *ngIf="showPassword"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -51,7 +51,7 @@
             </svg>
 
             <svg
-              *ngIf="showPassword"
+              *ngIf="!showPassword"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
