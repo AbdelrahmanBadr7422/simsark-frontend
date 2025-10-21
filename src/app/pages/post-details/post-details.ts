@@ -16,7 +16,7 @@ import { CreateOfferRequest, CreateOfferResponse } from '../../models/offerModel
 @Component({
   selector: 'app-post-details',
   standalone: true,
-  imports: [CommonModule, DatePipe, Payment, ReactiveFormsModule,RouterLink],
+  imports: [CommonModule, DatePipe, Payment, ReactiveFormsModule, RouterLink],
   templateUrl: './post-details.html',
 })
 export class PostDetails implements OnInit, OnDestroy {
@@ -109,6 +109,7 @@ export class PostDetails implements OnInit, OnDestroy {
     this.offerService.addOfferService(offer).subscribe({
       next: (res: CreateOfferResponse) => {
         this.showOfferModal = false;
+        this.offerForm.reset();
         this.showToastMessage(' Offer sent successfully!', 'success');
       },
       error: () => this.showToastMessage('Failed to send offer', 'error'),
