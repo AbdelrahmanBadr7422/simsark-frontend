@@ -27,8 +27,10 @@ export class PostDetails implements OnInit, OnDestroy {
   private fb = inject(FormBuilder);
   private destroy$ = new Subject<void>();
   private _router = inject(Router);
+  private _authService = inject(Auth);
 
   isLogged = localStorage.getItem('authToken') != null;
+  isSeller$ = this._authService.isSeller$;
   currentPost: any;
   isLoading = true;
   hasError = false;
