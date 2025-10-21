@@ -41,6 +41,7 @@ export class PostDetails implements OnInit, OnDestroy {
   updateForm = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(5)]],
     description: ['', [Validators.required, Validators.minLength(10)]],
+    address: ['', [Validators.required, Validators.minLength(5)]],
     price: [0, [Validators.required, Validators.min(1)]],
     area: [0, [Validators.required, Validators.min(1)]],
     rooms: [0, [Validators.required, Validators.min(1)]],
@@ -109,7 +110,6 @@ export class PostDetails implements OnInit, OnDestroy {
     this.offerService.addOfferService(offer).subscribe({
       next: (res: CreateOfferResponse) => {
         this.showOfferModal = false;
-        this.offerForm.reset();
         this.showToastMessage(' Offer sent successfully!', 'success');
       },
       error: () => this.showToastMessage('Failed to send offer', 'error'),

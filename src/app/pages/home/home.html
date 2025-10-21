@@ -26,12 +26,14 @@
       >
         Explore Listings
       </a>
+      @if(isSeller){
       <a
-        routerLink="/new-post"
+        routerLink="/user/portfolio"
         class="border-2 border-[#2B1B12] text-[#2B1B12] font-semibold px-8 py-3 rounded-full hover:bg-[#2B1B12] hover:text-white transition-all duration-300"
       >
         List Your Property
       </a>
+      }
     </div>
   </div>
 

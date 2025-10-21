@@ -11,7 +11,6 @@ import { GetPostsResponse, PostModel } from '../../models/postModels';
 })
 export class Explore implements OnInit {
   private _postService = inject(Post);
-
   postsList: WritableSignal<PostModel[]> = signal([]);
   isLoading = signal(true);
   serverErrorMsg = signal('');
@@ -26,7 +25,7 @@ export class Explore implements OnInit {
     const priceFilter = this.priceRange();
 
     return this.postsList().filter((post) => {
-      const locationMatch = !search || post.title?.toLowerCase().includes(search);
+      const locationMatch = !search || post.address?.toLowerCase().includes(search);
       const typeMatch = !type || post.propertyType === type;
       const priceMatch = this.priceMatches(post.price, priceFilter);
 

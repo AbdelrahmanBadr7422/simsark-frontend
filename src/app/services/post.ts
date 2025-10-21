@@ -29,12 +29,12 @@ export class Post {
   }
   getPostsByOwner(ownerId: string): Observable<GetPostsResponse> {
     return this._httpClient
-      .get<GetPostsResponse>(`${this.postUrl}/posts/${ownerId}`)
+      .get<GetPostsResponse>(`${this.postUrl}/owner/${ownerId}`)
       .pipe(catchError(this._errorHandler.handleError));
   }
-  createPost(post: CreatePostRequest): Observable<CreatePostResponse> {
+  createPost(postData: FormData): Observable<CreatePostResponse> {
     return this._httpClient
-      .post<CreatePostResponse>(this.postUrl, post)
+      .post<CreatePostResponse>(this.postUrl, postData)
       .pipe(catchError(this._errorHandler.handleError));
   }
   getSinglePost(postId: string): Observable<GetPostByIdResponse> {

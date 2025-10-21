@@ -34,25 +34,46 @@ export class NewPost implements OnInit {
       rooms: ['', [Validators.required, Validators.min(1)]],
       bathrooms: ['', [Validators.required, Validators.min(1)]],
       images: [''],
+      address: ['', Validators.required],
     });
   }
+  selectedFiles: File[] = [];
 
   onImageSelect(event: any) {
-    const files = event.target.files;
-    if (!files?.length) return;
+    const files: FileList = event.target.files;
+    if (!files || files.length === 0) return;
 
-    this.previewImages = [];
-    const imageUrls: string[] = [];
+    const imageUrls: string[] = [...this.previewImages]; // keep previous previews
 
-    for (let file of files) {
+    Array.from(files).forEach((file) => {
+      this.selectedFiles.push(file);
+
       const reader = new FileReader();
       reader.onload = (e: any) => {
-        this.previewImages.push(e.target.result);
-        imageUrls.push(e.target.result);
-        this.postForm.patchValue({ images: imageUrls });
+        if (e.target.result) {
+          const imageUrl = e.target.result as string;
+          this.previewImages.push(imageUrl);
+          imageUrls.push(imageUrl);
+          this.postForm.patchValue({ images: [...imageUrls] });
+        }
       };
       reader.readAsDataURL(file);
-    }
+    });
+
+    // Reset input value to allow reselecting same files
+    event.target.value = '';
+  }
+
+  removeImage(index: number) {
+    this.previewImages.splice(index, 1);
+    this.selectedFiles.splice(index, 1);
+    this.postForm.patchValue({ images: [...this.previewImages] });
+  }
+
+  clearImages() {
+    this.previewImages = [];
+    this.selectedFiles = [];
+    this.postForm.patchValue({ images: [] });
   }
 
   addNewPost() {
@@ -65,16 +86,28 @@ export class NewPost implements OnInit {
     this.serverErrorMsg = '';
     this.successMessage = '';
 
+    const formData = new FormData();
     const form = this.postForm.value;
-    const postData: CreatePostRequest = {
-      ...form,
-      area: +form.area,
-      rooms: +form.rooms,
-      bathrooms: +form.bathrooms,
-      images: this.previewImages,
-    };
 
-    this.postService.createPost(postData).subscribe({
+    // append text fields
+    formData.append('title', form.title);
+    formData.append('description', form.description);
+    formData.append('propertyType', form.propertyType);
+    formData.append('price', form.price);
+    formData.append('area', form.area);
+    formData.append('rooms', form.rooms);
+    formData.append('bathrooms', form.bathrooms);
+    formData.append('address', form.address);
+
+    // append real image files
+    this.selectedFiles.forEach((file) => {
+      formData.append('images', file);
+    });
+
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+    this.postService.createPost(formData).subscribe({
       next: (res: CreatePostResponse) => {
         this.isLoading = false;
         this.successMessage = 'Post created successfully! Redirecting...';

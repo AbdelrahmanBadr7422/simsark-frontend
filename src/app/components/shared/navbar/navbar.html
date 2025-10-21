@@ -43,9 +43,19 @@
         Contact
       </a>
     </li>
+    @if(isSeller$){
+    <li>
+      <a
+        routerLink="/create-post"
+        routerLinkActive="text-[#D7C3B8] font-semibold border-b-2 border-[#D7C3B8]"
+        class="hover:text-[#E9DCCB]/80 transition-colors duration-200 pb-1"
+      >
+        Advertise
+      </a>
+    </li>
+    }
   </ul>
 
-  
   <div class="hidden md:flex items-center space-x-3">
     @if((isLogged$ | async) === false){
     <button
@@ -76,7 +86,6 @@
     }
   </div>
 
-  
   <div
     *ngIf="menuOpen"
     class="absolute top-20 left-0 w-full bg-[#2B1B12] border-t border-[#3B261A] shadow-lg md:hidden"

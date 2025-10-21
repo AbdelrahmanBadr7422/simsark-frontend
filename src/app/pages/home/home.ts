@@ -7,4 +7,6 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
   templateUrl: './home.html',
 })
-export class Home {}
+export class Home {
+  isSeller = localStorage.getItem('userRole') == 'seller';
+}

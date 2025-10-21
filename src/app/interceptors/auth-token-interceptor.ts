@@ -4,18 +4,19 @@ import { catchError, throwError } from 'rxjs';
 export const authTokenInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('authToken');
 
-  const authReq = token
-    ? req.clone({
-        setHeaders: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
-    : req;
+  const isFormData = req.body instanceof FormData;
 
-  return next(authReq).pipe(
-    catchError((error: HttpErrorResponse) => {
-      return throwError(() => error);
-    })
-  );
+  const headers: Record<string, string> = {};
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  if (!isFormData) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  const authReq = Object.keys(headers).length ? req.clone({ setHeaders: headers }) : req;
+
+  return next(authReq).pipe(catchError((error: HttpErrorResponse) => throwError(() => error)));
 };

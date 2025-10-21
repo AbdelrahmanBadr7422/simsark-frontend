@@ -7,6 +7,7 @@ export interface PostModel {
   title: string;
   description: string;
   price: number;
+  address?: string;
   propertyType: PropertyType;
   area: number;
   rooms: number;
