@@ -17,19 +17,19 @@ export class Navbar {
   isSeller$ = this.authService.isSeller$;
 
   menuOpen = false;
-  dropdownOpen = false; // ✅ Add this
+  dropdownOpen = false;
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
 
   toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen; // ✅ Add this
+    this.dropdownOpen = !this.dropdownOpen;
   }
 
   logout() {
     this.authService.logout();
-    this.dropdownOpen = false; // optional — close dropdown on logout
+    this.dropdownOpen = false;
     this.router.navigate(['/home']);
   }
   closeMenu() {
