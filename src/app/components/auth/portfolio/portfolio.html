@@ -1,0 +1,60 @@
+@if (isLoading()) {
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+  @for (_ of [1, 2, 3, 4, 5, 6]; track _) {
+  <div class="bg-white rounded-3xl shadow-md w-full max-w-sm animate-pulse overflow-hidden">
+    <div class="h-56 w-full bg-gray-300"></div>
+    <div class="p-5 space-y-3">
+      <div class="h-6 bg-gray-300 rounded w-3/4"></div>
+      <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+      <div class="h-4 bg-gray-200 rounded w-2/3"></div>
+      <div class="h-5 bg-gray-300 rounded w-1/4"></div>
+    </div>
+  </div>
+  }
+</div>
+} @if (serverErrorMsg() && !isLoading()) {
+<p class="text-center text-red-500 text-lg my-10">
+  {{ serverErrorMsg() }}
+</p>
+} @if (!isLoading() && filteredPosts().length > 0) {
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 place-items-center">
+  @for (post of filteredPosts(); track post._id) {
+  <a
+    [routerLink]="['/post', post._id]"
+    class="group relative bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 max-w-sm w-full"
+  >
+    <div class="relative">
+      <img
+        [src]="post.images[0] || 'assets/placeholders/house-placeholder.jpg'"
+        alt="Property Image"
+        class="h-56 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <div
+        class="absolute top-3 left-3 bg-[#2B1B12]/80 text-white text-xs font-medium px-3 py-1 rounded-full"
+      >
+        {{ post.propertyType }}
+      </div>
+      <div
+        class="absolute bottom-3 right-3 bg-[#DCC8B9]/90 text-[#2B1B12] font-semibold px-3 py-1 rounded-full text-sm"
+      >
+        ${{ post.price }}
+      </div>
+    </div>
+
+    <div class="p-5 space-y-2">
+      <h3 class="text-[#2B1B12] text-xl font-semibold truncate">
+        {{ post.title }}
+      </h3>
+      <p class="text-[#6B5B4D] text-sm">
+        {{ post.area }} m² • {{ post.rooms }} rooms • {{ post.bathrooms }} baths
+      </p>
+      <p class="text-[#8C7A6B] text-sm truncate">
+        {{ post.description || 'Beautiful modern property in a prime location.' }}
+      </p>
+    </div>
+  </a>
+  }
+</div>
+} @if (!isLoading() && filteredPosts().length === 0 && !serverErrorMsg()) {
+<p class="text-center text-gray-500 text-lg my-10">No matching properties found.</p>
+}

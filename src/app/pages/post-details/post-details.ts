@@ -16,7 +16,7 @@ import { CreateOfferRequest, CreateOfferResponse } from '../../models/offerModel
 @Component({
   selector: 'app-post-details',
   standalone: true,
-  imports: [CommonModule, DatePipe, Payment, ReactiveFormsModule,RouterLink,JsonPipe],
+  imports: [CommonModule, DatePipe, Payment, ReactiveFormsModule,RouterLink],
   templateUrl: './post-details.html',
 })
 export class PostDetails implements OnInit, OnDestroy {

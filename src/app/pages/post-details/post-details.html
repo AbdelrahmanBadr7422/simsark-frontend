@@ -1,101 +1,61 @@
-        {{currentPost|json}}
 <div class="container mx-auto px-4 py-10">
   @if (isLoading) {
   <div class="text-center py-20 text-gray-500 text-xl">Loading property details...</div>
   } @else if (hasError) {
   <div class="text-center py-20 text-red-600 text-xl">Failed to load property details.</div>
   } @else if (currentPost) {
-  <div class="bg-white rounded-2xl shadow-lg overflow-hidden p-6 md:p-10">
-    
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col md:flex-row">
+    <div class="w-full md:w-1/2 relative bg-gray-100">
+      <div class="flex overflow-x-auto snap-x snap-mandatory">
+        @for (img of currentPost.images; track $index) {
+        <img
+          [src]="img"
+          alt="Property Image"
+          class="h-80 md:h-full w-full object-cover snap-center flex-shrink-0"
+        />
+        }
+      </div>
+    </div>
+    <div class="w-full md:w-1/2 p-6 space-y-4 flex flex-col justify-between">
       <div>
-        <h1 class="text-4xl font-extrabold text-[#2B1B12]">
-          ${{ currentPost.price | number : '1.0-0' }}
-        </h1>
-        <p class="text-lg text-gray-600 font-medium mt-1">
-          {{ currentPost.title }}
+        <h2 class="text-3xl font-bold text-[#2B1B12] mb-2">{{ currentPost.title }}</h2>
+        <p class="text-gray-700 text-lg leading-relaxed">
+          {{ currentPost.description || 'No description available.' }}
         </p>
+
+        <ul class="text-gray-800 text-base space-y-1 mt-4">
+          <li><strong>Owner:</strong> {{ currentPost.owner.email || 'Unknown Owner' }}</li>
+          <li><strong>Type:</strong> {{ currentPost.propertyType || 'N/A' }}</li>
+          <li><strong>Area:</strong> {{ currentPost.area }} m²</li>
+          <li><strong>Rooms:</strong> {{ currentPost.rooms }}</li>
+          <li><strong>Bathrooms:</strong> {{ currentPost.bathrooms }}</li>
+          <li><strong>Last Updated:</strong> {{ currentPost.updatedAt | date : 'medium' }}</li>
+        </ul>
       </div>
 
       @if (!postOwner) {
-      <div class="flex items-center gap-3 w-full sm:w-auto">
+      <div class="pt-4 flex flex-col sm:flex-row gap-3 justify-between">
         <button
           (click)="openOfferModal()"
-          class="bg-[#2B1B12] hover:bg-[#3b261a] text-white px-5 py-2 rounded-lg transition font-semibold"
+          class="flex-1 bg-[#2B1B12] hover:bg-[#3b261a] text-white py-2 rounded transition"
         >
-          Make an Offer
+          Bid Now
         </button>
-        <app-payment [moneyAmount]="currentPost.price" class="hidden sm:inline-block">
+        <app-payment
+          [moneyAmount]="currentPost.price"
+          class="flex-1 "
+        >
           {{ currentPost.price | currency }}
         </app-payment>
       </div>
       } @else {
       <a
         [routerLink]="['/offers/', currentPost._id]"
-        class="font-bold text-[#2B1B12] hover:underline text-sm sm:text-base"
+        class="text-sm flex justify-end pr-5 font-bold text-[#2B1B12] hover:underline"
       >
         Show Offers
       </a>
-      }
-    </div>
-
-    
-    <div
-      class="relative w-full border border-gray-200 rounded-xl overflow-hidden shadow-sm mb-8 bg-gray-50"
-    >
-      <div class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth">
-        @for (img of currentPost.images; track $index) {
-        <img
-          [src]="img"
-          alt="Property Image"
-          class="h-80 w-full object-cover snap-center flex-shrink-0"
-        />
-        }
-      </div>
-    </div>
-
-    
-    <div>
-      <h2 class="text-2xl font-bold text-[#2B1B12] mb-3">Property Details</h2>
-      <p class="text-gray-700 text-lg leading-relaxed mb-6">
-        {{ currentPost.description || 'No description available.' }}
-      </p>
-
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-4 text-gray-800 text-base">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-user text-[#2B1B12]"></i>
-          <strong class="font-semibold text-gray-700">Owner:</strong>
-          {{ currentPost.owner.email || 'Unknown Owner' }}
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-building text-[#2B1B12]"></i>
-          <strong class="font-semibold text-gray-700">Type:</strong>
-          {{ currentPost.propertyType || 'N/A' }}
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-ruler-combined text-[#2B1B12]"></i>
-          <strong class="font-semibold text-gray-700">Area:</strong>
-          {{ currentPost.area }} m²
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-bed text-[#2B1B12]"></i>
-          <strong class="font-semibold text-gray-700">Rooms:</strong>
-          {{ currentPost.rooms }}
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-bath text-[#2B1B12]"></i>
-          <strong class="font-semibold text-gray-700">Bathrooms:</strong>
-          {{ currentPost.bathrooms }}
-        </div>
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-clock text-[#2B1B12]"></i>
-          <strong class="font-semibold text-gray-700">Last Updated:</strong>
-          {{ currentPost.updatedAt | date : 'medium' }}
-        </div>
-      </div>
-
-      @if (postOwner) {
-      <div class="pt-8 flex flex-col sm:flex-row gap-3 justify-between">
+      <div class="pt-4 flex flex-col sm:flex-row gap-3 justify-between">
         <button
           (click)="openEditModal()"
           class="flex-1 bg-amber-700 hover:bg-amber-800 text-white py-2 rounded transition"
@@ -115,7 +75,6 @@
   }
 </div>
 
-
 @if (showToast) {
 <div
   class="fixed top-5 right-5 px-4 py-2 rounded-lg text-white shadow-lg transition-opacity duration-500"
@@ -124,10 +83,7 @@
 >
   {{ toastMessage }}
 </div>
-}
-
-
-@if (showDeleteConfirm) {
+} @if (showDeleteConfirm) {
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white rounded-lg p-6 w-80 text-center shadow-lg">
     <h3 class="text-lg font-semibold mb-4">Are you sure?</h3>
@@ -145,10 +101,7 @@
     </div>
   </div>
 </div>
-}
-
-
-@if (showEditModal) {
+} @if (showEditModal) {
 <div class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
   <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-8">
     <h3 class="text-2xl font-bold text-center mb-6">Edit Post</h3>
@@ -226,10 +179,7 @@
     </form>
   </div>
 </div>
-}
-
-
-@if (showOfferModal) {
+} @if (showOfferModal) {
 <div class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
   <div class="bg-white rounded-xl shadow-lg w-full max-w-md p-6">
     <h3 class="text-xl font-bold text-center mb-4">Make an Offer</h3>

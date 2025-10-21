@@ -1,0 +1,57 @@
+<div class="min-h-screen flex bg-[#F9F6F4]">
+  <aside
+    class="w-64 bg-[#2B1B12] text-[#E9DCCB] flex flex-col justify-between py-6 px-4 fixed md:static h-full md:h-auto z-50"
+  >
+    <div>
+      <h1 class="text-2xl font-extrabold text-center mb-8 tracking-wide">Dashboard</h1>
+
+      <nav>
+        <ul class="space-y-4 font-medium">
+          <li>
+            <a
+              routerLink="profile"
+              routerLinkActive="bg-[#3b261a] text-[#D7C3B8] font-semibold"
+              class="block px-4 py-2 rounded-lg hover:bg-[#3b261a]/80 transition-all duration-200"
+            >
+              <i class="fa-solid fa-user mr-2"></i> Profile
+            </a>
+          </li>
+          @if(isSeller){
+
+          <li>
+            <a
+              routerLink="portfolio"
+              routerLinkActive="bg-[#3b261a] text-[#D7C3B8] font-semibold"
+              class="block px-4 py-2 rounded-lg hover:bg-[#3b261a]/80 transition-all duration-200"
+            >
+              <i class="fa-solid fa-briefcase mr-2"></i> Portfolio
+            </a>
+          </li>
+          }
+          <li>
+            <a
+              routerLink="offers"
+              routerLinkActive="bg-[#3b261a] text-[#D7C3B8] font-semibold"
+              class="block px-4 py-2 rounded-lg hover:bg-[#3b261a]/80 transition-all duration-200"
+            >
+              <i class="fa-solid fa-store"></i> Offers
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="border-t border-[#E9DCCB]/20 pt-4">
+      <button
+        class="flex items-center gap-2 px-4 py-2 w-full text-left text-sm hover:bg-[#3b261a]/80 rounded-lg transition"
+      >
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <main class="flex-1 ml-64 md:ml-0 p-6 md:p-10 transition-all duration-300">
+    <router-outlet></router-outlet>
+  </main>
+</div>
