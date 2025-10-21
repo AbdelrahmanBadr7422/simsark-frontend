@@ -1,6 +1,7 @@
 <nav
   class="relative top-0 left-0 w-full z-50 flex items-center justify-between px-6 md:px-10 lg:px-16 py-4 bg-[#2B1B12] shadow-md text-[#E9DCCB]"
 >
+  <!-- Logo -->
   <div class="flex items-center space-x-2">
     <a
       routerLink="/"
@@ -10,10 +11,12 @@
     </a>
   </div>
 
+  <!-- Mobile Menu Button -->
   <button class="md:hidden text-[#E9DCCB] text-3xl focus:outline-none" (click)="toggleMenu()">
     <i class="fa-solid" [ngClass]="menuOpen ? 'fa-xmark' : 'fa-bars'"></i>
   </button>
 
+  <!-- Desktop Links -->
   <ul class="hidden md:flex space-x-6 lg:space-x-10 font-medium">
     <li>
       <a
@@ -43,20 +46,10 @@
         Contact
       </a>
     </li>
-    @if(isSeller$){
-    <li>
-      <a
-        routerLink="/create-post"
-        routerLinkActive="text-[#D7C3B8] font-semibold border-b-2 border-[#D7C3B8]"
-        class="hover:text-[#E9DCCB]/80 transition-colors duration-200 pb-1"
-      >
-        Advertise
-      </a>
-    </li>
-    }
   </ul>
 
-  <div class="hidden md:flex items-center space-x-3">
+  <!-- Desktop Auth Section -->
+  <div class="hidden md:flex items-center space-x-4">
     @if((isLogged$ | async) === false){
     <button
       routerLink="/auth/register"
@@ -71,65 +64,41 @@
       Login
     </button>
     } @else {
+    <!-- CTA: Advertise -->
+    @if(isSeller$){
     <button
-      routerLink="/user"
-      class="flex items-center gap-2 border border-[#D7C3B8]/40 text-[#E9DCCB] px-4 py-2 rounded-md hover:bg-[#3B261A] transition-all duration-200"
-    >
-      <i class="fa-solid fa-user"></i> Profile
-    </button>
-    <button
-      (click)="logout()"
+      routerLink="/create-post"
       class="bg-[#D7C3B8] text-[#2B1B12] font-semibold px-5 py-2 rounded-md hover:bg-[#B99F8A] transition-all duration-200"
     >
-      Logout
+      Advertise
     </button>
+    }
+
+    <!-- Profile Dropdown -->
+    <div class="relative" (click)="toggleDropdown()" (mouseleave)="dropdownOpen = false">
+      <button
+        class="flex items-center gap-2 border border-[#D7C3B8]/40 text-[#E9DCCB] px-4 py-2 rounded-md hover:bg-[#3B261A] transition-all duration-200"
+      >
+        <i class="fa-solid fa-user text-lg"></i>
+        <i class="fa-solid fa-caret-down text-sm"></i>
+      </button>
+
+      <div
+        *ngIf="dropdownOpen"
+        class="absolute right-0 mt-2 w-40 bg-[#3B261A] text-[#E9DCCB] rounded-md shadow-lg overflow-hidden border border-[#4A2E1D]"
+      >
+        <a routerLink="/user" class="block px-4 py-2 hover:bg-[#4A2E1D] transition"> Profile </a>
+        <button (click)="logout()" class="w-full text-left px-4 py-2 hover:bg-[#4A2E1D] transition">
+          Logout
+        </button>
+      </div>
+    </div>
     }
   </div>
 
+  <!-- Mobile Menu -->
   <div
     *ngIf="menuOpen"
     class="absolute top-20 left-0 w-full bg-[#2B1B12] border-t border-[#3B261A] shadow-lg md:hidden"
-  >
-    <ul class="flex flex-col items-center space-y-4 py-4 font-medium">
-      <li>
-        <a routerLink="/home" class="hover:text-[#E9DCCB]/80">Home</a>
-      </li>
-      <li>
-        <a routerLink="/explore" class="hover:text-[#E9DCCB]/80">Explore</a>
-      </li>
-      <li>
-        <a routerLink="/contact" class="hover:text-[#E9DCCB]/80">Contact</a>
-      </li>
-
-      <div class="flex flex-col items-center gap-3 mt-3">
-        @if((isLogged$ | async) === false){
-        <button
-          routerLink="/auth/register"
-          class="bg-[#D7C3B8] text-[#2B1B12] font-semibold px-16 py-2 rounded-md hover:bg-[#B99F8A] transition-all duration-200"
-        >
-          Register
-        </button>
-        <button
-          routerLink="/auth/login"
-          class="border border-[#E9DCCB] text-[#D7C3B8] font-semibold px-16 py-2 rounded-md hover:bg-[#D7C3B8] hover:text-[#2B1B12] transition-all duration-200"
-        >
-          Login
-        </button>
-        } @else {
-        <button
-          routerLink="/profile"
-          class="flex items-center gap-2 border border-[#D7C3B8]/40 text-[#E9DCCB] px-16 py-2 rounded-md hover:bg-[#3B261A] transition-all duration-200"
-        >
-          <i class="fa-solid fa-user"></i> Profile
-        </button>
-        <button
-          (click)="logout()"
-          class="bg-[#D7C3B8] text-[#2B1B12] font-semibold px-16 py-2 rounded-md hover:bg-[#B99F8A] transition-all duration-200"
-        >
-          Logout
-        </button>
-        }
-      </div>
-    </ul>
-  </div>
+  ></div>
 </nav>
