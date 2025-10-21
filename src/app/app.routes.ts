@@ -13,7 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'explore',
-    loadComponent: () => import('./components/shared/explore/explore').then((c) => c.Explore),
+    loadComponent: () => import('./pages/explore/explore').then((c) => c.Explore),
     title: 'Explore',
   },
   {
@@ -88,7 +88,7 @@ export const routes: Routes = [
       },
       {
         path: 'offers/:postId',
-        canActivate:[sellerGuard],
+        canActivate: [sellerGuard],
         loadComponent: () =>
           import('./components/auth/offers-list/offers-list').then((c) => c.OffersList),
         title: 'Offers',

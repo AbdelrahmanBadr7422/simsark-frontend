@@ -9,12 +9,10 @@ import { environment } from '../../../../environments/environment';
   templateUrl: './payment.html',
 })
 export class Payment implements OnInit {
-
-  @Input() moneyAmount!:number;
+  @Input() moneyAmount!: number;
   private stripeKey = environment.stripe.publicKey;
   paymentHandler: any = null;
   loading = false;
-
 
   ngOnInit() {
     this.loadStripeScript();
@@ -47,7 +45,6 @@ export class Payment implements OnInit {
         key: this.stripeKey,
         locale: 'auto',
         token: (token: any) => {
-          console.log('Stripe token:', token);
           alert('✅ Payment successful!');
           this.loading = false;
         },

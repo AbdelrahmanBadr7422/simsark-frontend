@@ -71,12 +71,11 @@ export class NewPost implements OnInit {
       area: +form.area,
       rooms: +form.rooms,
       bathrooms: +form.bathrooms,
-      images:this.previewImages
+      images: this.previewImages,
     };
 
     this.postService.createPost(postData).subscribe({
       next: (res: CreatePostResponse) => {
-        console.log("CREATE NEW POST")
         this.isLoading = false;
         this.successMessage = 'Post created successfully! Redirecting...';
         this.postForm.reset();

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Explore } from '../../components/shared/explore/explore';
+import { Explore } from '../explore/explore';
 import { RouterModule } from '@angular/router';
 
 @Component({

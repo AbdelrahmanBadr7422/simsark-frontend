@@ -1,15 +1,15 @@
-import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
-import { Post } from '../../../services/post';
-import { PostModel, GetPostsResponse } from '../../../models/postModels';
+import { Component, OnInit, inject, signal, WritableSignal, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Post } from '../../services/post';
+import { GetPostsResponse, PostModel } from '../../models/postModels';
 
 @Component({
-  selector: 'app-portfolio',
+  selector: 'app-explore',
+  standalone: true,
   imports: [RouterLink],
-  templateUrl: './portfolio.html',
-  styles: ``,
+  templateUrl: './explore.html',
 })
-export class Portfolio {
+export class Explore implements OnInit {
   private _postService = inject(Post);
 
   postsList: WritableSignal<PostModel[]> = signal([]);
@@ -35,15 +35,14 @@ export class Portfolio {
   });
 
   ngOnInit() {
-    this.loadPostsforPortfolio();
+    this.loadPosts();
   }
 
-  loadPostsforPortfolio() {
+  loadPosts() {
     this.isLoading.set(true);
     this.serverErrorMsg.set('');
-    const userData = localStorage.getItem('userData');
-    const ownerId = userData ? JSON.parse(userData)._id : null;
-    this._postService.getPostsByOwner(ownerId).subscribe({
+
+    this._postService.getAllPosts().subscribe({
       next: (res: GetPostsResponse) => {
         this.isLoading.set(false);
         if (res.data && res.success) {

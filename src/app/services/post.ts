@@ -23,9 +23,13 @@ export class Post {
   private postUrl = `${environment.apiBaseUrl}/posts`;
 
   getAllPosts(): Observable<GetPostsResponse> {
-    console.log(this.postUrl);
     return this._httpClient
       .get<GetPostsResponse>(this.postUrl)
+      .pipe(catchError(this._errorHandler.handleError));
+  }
+  getPostsByOwner(ownerId: string): Observable<GetPostsResponse> {
+    return this._httpClient
+      .get<GetPostsResponse>(`${this.postUrl}/posts/${ownerId}`)
       .pipe(catchError(this._errorHandler.handleError));
   }
   createPost(post: CreatePostRequest): Observable<CreatePostResponse> {
