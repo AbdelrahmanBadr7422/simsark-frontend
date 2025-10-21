@@ -23,7 +23,6 @@ export class Post {
   private postUrl = `${environment.apiBaseUrl}/posts`;
 
   getAllPosts(): Observable<GetPostsResponse> {
-    console.log(this.postUrl);
     return this._httpClient
       .get<GetPostsResponse>(this.postUrl)
       .pipe(catchError(this._errorHandler.handleError));
@@ -38,9 +37,9 @@ export class Post {
       .get<GetPostByIdResponse>(`${this.postUrl}/${postId}`)
       .pipe(catchError(this._errorHandler.handleError));
   }
-  updatePostFormData(postId: string, data: FormData): Observable<UpdatePostResponse> {
+  updatePost(postId: string, post: updatePostRequest): Observable<UpdatePostResponse> {
     return this._httpClient
-      .put<UpdatePostResponse>(`${this.postUrl}/${postId}`, data)
+      .put<UpdatePostResponse>(`${this.postUrl}/${postId}`, post)
       .pipe(catchError(this._errorHandler.handleError));
   }
   deletePost(postId: string): Observable<DeletePostResponse> {
