@@ -34,7 +34,7 @@
             [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'"
           >
             <svg
-              *ngIf="!showPassword"
+              *ngIf="showPassword"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -51,7 +51,7 @@
             </svg>
 
             <svg
-              *ngIf="showPassword"
+              *ngIf="!showPassword"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

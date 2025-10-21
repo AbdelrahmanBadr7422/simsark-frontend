@@ -26,9 +26,9 @@ export class Offer {
       .pipe(catchError(this._errorHandler.handleError));
   }
 
-  respondToOffer(respond: RespondToOfferRequest): Observable<RespondToOfferResponse> {
+  respondToOffer(id:string,respond: RespondToOfferRequest): Observable<RespondToOfferResponse> {
     return this._httpClient
-      .patch<RespondToOfferResponse>(this.offerUrl, respond)
+      .patch<RespondToOfferResponse>(`${this.offerUrl}/${id}`, respond)
       .pipe(catchError(this._errorHandler.handleError));
   }
 

@@ -58,7 +58,7 @@ export class OffersList implements OnInit {
 
   /** ✅ Respond with backend call + live UI update */
   acceptOffer(id: string) {
-    this.offerService.respondToOffer({ action: 'ACCEPTED' }).subscribe({
+    this.offerService.respondToOffer(id,{ action: 'ACCEPTED' }).subscribe({
       next: (res: RespondToOfferResponse) => {
         this.offers.update((list) =>
           list.map((offer) =>
@@ -73,7 +73,7 @@ export class OffersList implements OnInit {
   }
 
   rejectOffer(id: string) {
-    this.offerService.respondToOffer( { action: 'REJECTED' }).subscribe({
+    this.offerService.respondToOffer( id,{ action: 'REJECTED' }).subscribe({
       next: (res: RespondToOfferResponse) => {
         this.offers.update((list) =>
           list.map((offer) =>

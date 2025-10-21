@@ -1,6 +1,6 @@
 import { UserSummary } from './offerModels';
 
-export type PropertyType = 'apartment' | 'villa' | 'studio' | 'land' ;
+export type PropertyType = 'Apartment' | 'Villa' | 'Office';
 
 export interface PostModel {
   _id: string;

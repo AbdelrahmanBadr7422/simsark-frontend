@@ -109,6 +109,7 @@ export class PostDetails implements OnInit, OnDestroy {
     this.offerService.addOfferService(offer).subscribe({
       next: (res: CreateOfferResponse) => {
         this.showOfferModal = false;
+        this.offerForm.reset();
         this.showToastMessage(' Offer sent successfully!', 'success');
       },
       error: () => this.showToastMessage('Failed to send offer', 'error'),
