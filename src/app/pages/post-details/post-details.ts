@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
@@ -12,6 +12,7 @@ import {
   UpdatePostResponse,
 } from '../../models/postModels';
 import { CreateOfferRequest, CreateOfferResponse } from '../../models/offerModels';
+import { Auth } from '../../services/auth';
 
 @Component({
   selector: 'app-post-details',
@@ -25,7 +26,9 @@ export class PostDetails implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private fb = inject(FormBuilder);
   private destroy$ = new Subject<void>();
+  private _router = inject(Router);
 
+  isLogged = localStorage.getItem('authToken') != null;
   currentPost: any;
   isLoading = true;
   hasError = false;
@@ -91,7 +94,9 @@ export class PostDetails implements OnInit, OnDestroy {
   }
 
   openOfferModal() {
-    this.showOfferModal = true;
+    if (!this.isLogged) {
+      this._router.navigate(['/auth/login']);
+    } else this.showOfferModal = true;
   }
 
   closeOfferModal() {
