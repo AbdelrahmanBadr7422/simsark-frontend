@@ -62,6 +62,21 @@ export class PostDetails implements OnInit, OnDestroy {
     this.displayPost();
   }
 
+  currentImageIndex = 0;
+
+  prevImage() {
+    if (this.currentPost && this.currentPost.images.length) {
+      this.currentImageIndex =
+        (this.currentImageIndex - 1 + this.currentPost.images.length) %
+        this.currentPost.images.length;
+    }
+  }
+
+  nextImage() {
+    if (this.currentPost && this.currentPost.images.length) {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.currentPost.images.length;
+    }
+  }
   private displayPost(): void {
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((paramMap) => {
       const postId = paramMap.get('postId');
