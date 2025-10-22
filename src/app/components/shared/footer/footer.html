@@ -1,1 +1,92 @@
-<p>footer works!</p>
+<footer class="bg-[#2B1B12] text-[#E9DCCB] mt-20 border-t border-[#3B261A]">
+  <div
+    class="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10"
+  >
+    <!-- Brand -->
+    <div>
+      <h2 class="text-2xl font-bold mb-4 text-[#D7C3B8]">Simsark</h2>
+      <p class="text-sm text-[#CBB6A6] leading-relaxed">
+        Your trusted platform for finding the perfect property. Discover homes, villas, and offices
+        tailored to your lifestyle.
+      </p>
+    </div>
+
+    <!-- Quick Links -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4 text-[#D7C3B8]">Quick Links</h3>
+      <ul class="space-y-2">
+        <li>
+          <a routerLink="/home" class="hover:text-[#D7C3B8] transition-colors duration-200">Home</a>
+        </li>
+        <li>
+          <a routerLink="/explore" class="hover:text-[#D7C3B8] transition-colors duration-200"
+            >Explore</a
+          >
+        </li>
+        <li>
+          <a routerLink="/contact" class="hover:text-[#D7C3B8] transition-colors duration-200"
+            >Contact</a
+          >
+        </li>
+        <li>
+          <a routerLink="/about" class="hover:text-[#D7C3B8] transition-colors duration-200"
+            >About Us</a
+          >
+        </li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4 text-[#D7C3B8]">Contact</h3>
+      <ul class="space-y-2 text-sm text-[#CBB6A6]">
+        <li><i class="fa-solid fa-location-dot mr-2 text-[#D7C3B8]"></i> Cairo, Egypt</li>
+        <li><i class="fa-solid fa-phone mr-2 text-[#D7C3B8]"></i> +20 123 456 789</li>
+        <li>
+          <i class="fa-solid fa-envelope mr-2 text-[#D7C3B8]"></i>
+          support@simsark.com
+        </li>
+      </ul>
+    </div>
+
+    <!-- Social -->
+    <div>
+      <h3 class="text-lg font-semibold mb-4 text-[#D7C3B8]">Follow Us</h3>
+      <div class="flex space-x-4 text-xl">
+        <a
+          href="#"
+          class="hover:text-[#D7C3B8] transition-colors duration-200"
+          aria-label="Facebook"
+        >
+          <i class="fa-brands fa-facebook-f"></i>
+        </a>
+        <a
+          href="#"
+          class="hover:text-[#D7C3B8] transition-colors duration-200"
+          aria-label="Twitter"
+        >
+          <i class="fa-brands fa-x-twitter"></i>
+        </a>
+        <a
+          href="#"
+          class="hover:text-[#D7C3B8] transition-colors duration-200"
+          aria-label="Instagram"
+        >
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a
+          href="#"
+          class="hover:text-[#D7C3B8] transition-colors duration-200"
+          aria-label="LinkedIn"
+        >
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="border-t border-[#3B261A] text-center py-4 text-sm text-[#CBB6A6]">
+    <p>© {{ currentYear }} Simsark. All rights reserved.</p>
+  </div>
+</footer>

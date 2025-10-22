@@ -17,6 +17,11 @@ export const routes: Routes = [
     title: 'Explore',
   },
   {
+    path: 'about',
+    loadComponent: () => import('./pages/about/about').then((c) => c.About),
+    title: 'About Us',
+  },
+  {
     path: 'auth',
     canActivate: [loggedGuard],
     children: [
