@@ -1,199 +1,244 @@
-<section class="min-h-screen flex flex-col lg:flex-row bg-[#F8F4F0]">
-  <!-- Left Progress Bar -->
-  <div class="hidden lg:block w-2 bg-[#E5D5C5] relative">
+<section class="min-h-screen py-15 flex flex-col bg-[#F8F4F0]">
+  <div
+    class="w-2xl h-3 bg-[#EDE6E0] rounded-full overflow-hidden shadow-inner top-30 absolute left-1/2 transform -translate-x-1/2"
+  >
     <div
-      id="progressBar"
-      class="absolute left-0 top-0 w-full bg-[#2B1B12] rounded-r transition-all duration-300"
-      style="height: 0%"
+      class="h-full bg-gradient-to-r from-[#2B1B12] to-[#5C3D2E] transition-all duration-500"
+      [style.width.%]="progressPercent"
     ></div>
   </div>
 
-  <!-- Main Form Section -->
-  <div class="flex-1 flex items-center justify-center px-6 md:px-12 py-12">
-    <div class="w-full max-w-lg bg-white shadow-lg rounded-2xl p-8">
-      <h2 class="text-3xl font-bold mb-8 text-center text-[#2B1B12]">Advertise your property</h2>
+  <div class="flex-1 flex items-start justify-center px-6 md:px-12 py-12">
+    <div class="w-full max-w-3xl bg-white shadow-lg rounded-2xl p-6 md:p-8">
+      <div class="mb-4">
+        <h3 class="text-lg font-semibold text-[#2B1B12]">{{ steps[currentStep].label }}</h3>
+        <span class="text-sm text-[#6B5B4D]">{{ currentStep + 1 }} / {{ steps.length }}</span>
+      </div>
 
-      <form [formGroup]="postForm" (ngSubmit)="addNewPost()" class="space-y-6 overflow-y-auto">
-        <!-- Title -->
-        <div class="relative">
-          <input
-            type="text"
-            id="title"
-            formControlName="title"
-            placeholder=" "
-            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] focus:outline-none focus:border-[#2B1B12]"
-          />
-          <label
-            for="title"
-            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]"
-          >
-            Title
-          </label>
-          @if(getFieldError('title')) {
-          <div class="text-red-600 text-sm mt-1">{{ getFieldError('title') }}</div>
-          }
-        </div>
+      <div class="relative min-h-[320px]">
+        <form [formGroup]="postForm" (ngSubmit)="onFinalSubmit()" novalidate>
+          <div *ngIf="currentStep === 0" class="space-y-4 animate-fadeIn">
+            <h2 class="text-2xl font-bold text-[#2B1B12]">Basic Info</h2>
+            <div>
+              <label class="block text-sm text-[#6B5B4D] mb-1">Title</label>
+              <input
+                formControlName="title"
+                type="text"
+                class="w-full border-b-2 border-[#B99F8A] py-2 focus:outline-none focus:border-[#2B1B12] placeholder:text-[#A89F92]"
+                placeholder="Title..."
+              />
+              <p *ngIf="getFieldError('title')" class="text-red-600 text-sm mt-1">
+                {{ getFieldError('title') }}
+              </p>
+            </div>
 
-        <!-- Description -->
-        <div class="relative">
-          <textarea
-            id="description"
-            formControlName="description"
-            rows="3"
-            placeholder=" "
-            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] focus:outline-none focus:border-[#2B1B12]"
-          ></textarea>
-          <label
-            for="description"
-            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]"
-          >
-            Description
-          </label>
-          @if(getFieldError('description')) {
-          <div class="text-red-600 text-sm mt-1">{{ getFieldError('description') }}</div>
-          }
-        </div>
+            <div>
+              <label class="block text-sm text-[#6B5B4D] mb-1">Short Description</label>
+              <textarea
+                rows="4"
+                formControlName="description"
+                class="w-full border-b-2 border-[#B99F8A] py-2 focus:outline-none focus:border-[#2B1B12] resize-none placeholder:text-[#A89F92]"
+                placeholder="Short description..."
+              ></textarea>
+              <p *ngIf="getFieldError('description')" class="text-red-600 text-sm mt-1">
+                {{ getFieldError('description') }}
+              </p>
+            </div>
+          </div>
 
-        <!-- Address -->
-        <div class="relative">
-          <input
-            id="address"
-            type="text"
-            formControlName="address"
-            placeholder=" "
-            class="peer w-full bg-transparent border-b-2 border-[#B99F8A] py-3 text-[#2B1B12] focus:outline-none focus:border-[#2B1B12]"
-          />
-          <label
-            for="address"
-            class="absolute left-0 top-3 text-[#6B5B4D] text-sm transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:top-0 peer-focus:text-xs peer-focus:text-[#2B1B12]"
-          >
-            Address
-          </label>
-          @if(getFieldError('address')) {
-          <div class="text-red-600 text-sm mt-1">{{ getFieldError('address') }}</div>
-          }
-        </div>
+          <div *ngIf="currentStep === 1" class="space-y-4 animate-fadeIn">
+            <h2 class="text-2xl font-bold text-[#2B1B12]">Location & Type</h2>
+            <div>
+              <label class="block text-sm text-[#6B5B4D] mb-1">Address</label>
+              <input
+                formControlName="address"
+                type="text"
+                class="w-full border-b-2 border-[#B99F8A] py-2 focus:outline-none focus:border-[#2B1B12] placeholder:text-[#A89F92]"
+                placeholder="Address..."
+              />
+              <p *ngIf="getFieldError('address')" class="text-red-600 text-sm mt-1">
+                {{ getFieldError('address') }}
+              </p>
+            </div>
 
-        <!-- Images -->
-        <div>
-          <label class="block mb-2 text-[#6B5B4D] text-sm font-medium">Upload Images</label>
-          <input
-            type="file"
-            (change)="onImageSelect($event)"
-            multiple
-            accept="image/*"
-            class="block w-full text-sm text-[#2B1B12] border border-[#B99F8A] rounded-lg cursor-pointer bg-[#F8F4F0] focus:outline-none"
-          />
-          <div class="flex flex-wrap gap-3 mt-3">
-            @for (img of previewImages; track $index) {
-            <div class="relative">
-              <img [src]="img" class="w-24 h-24 rounded-lg object-cover shadow" />
-              <button
-                type="button"
-                (click)="removeImage($index)"
-                class="cursor-pointer absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs"
+            <div>
+              <label class="block text-sm text-[#6B5B4D] mb-1">Property Type</label>
+              <select
+                formControlName="propertyType"
+                class="w-full border-b-2 border-[#B99F8A] py-2 focus:outline-none focus:border-[#2B1B12]"
               >
-                ×
+                <option value="" disabled selected>Select type</option>
+                <option>Apartment</option>
+                <option>Villa</option>
+                <option>Office</option>
+              </select>
+              <p *ngIf="getFieldError('propertyType')" class="text-red-600 text-sm mt-1">
+                {{ getFieldError('propertyType') }}
+              </p>
+            </div>
+          </div>
+
+          <div *ngIf="currentStep === 2" class="space-y-4 animate-fadeIn">
+            <h2 class="text-2xl font-bold text-[#2B1B12]">Property Details</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm text-[#6B5B4D] mb-1">Price ($)</label>
+                <input
+                  formControlName="price"
+                  type="number"
+                  class="w-full border-b-2 border-[#B99F8A] py-2 focus:outline-none focus:border-[#2B1B12] placeholder:text-[#A89F92]"
+                  placeholder="Price..."
+                />
+                <p *ngIf="getFieldError('price')" class="text-red-600 text-sm mt-1">
+                  {{ getFieldError('price') }}
+                </p>
+              </div>
+
+              <div>
+                <label class="block text-sm text-[#6B5B4D] mb-1">Area (m²)</label>
+                <input
+                  formControlName="area"
+                  type="number"
+                  class="w-full border-b-2 border-[#B99F8A] py-2 focus:outline-none focus:border-[#2B1B12] placeholder:text-[#A89F92]"
+                  placeholder="Area..."
+                />
+                <p *ngIf="getFieldError('area')" class="text-red-600 text-sm mt-1">
+                  {{ getFieldError('area') }}
+                </p>
+              </div>
+
+              <div>
+                <label class="block text-sm text-[#6B5B4D] mb-1">Rooms</label>
+                <input
+                  formControlName="rooms"
+                  type="number"
+                  class="w-full border-b-2 border-[#B99F8A] py-2 focus:outline-none focus:border-[#2B1B12] placeholder:text-[#A89F92]"
+                  placeholder="Rooms..."
+                />
+                <p *ngIf="getFieldError('rooms')" class="text-red-600 text-sm mt-1">
+                  {{ getFieldError('rooms') }}
+                </p>
+              </div>
+
+              <div>
+                <label class="block text-sm text-[#6B5B4D] mb-1">Bathrooms</label>
+                <input
+                  formControlName="bathrooms"
+                  type="number"
+                  class="w-full border-b-2 border-[#B99F8A] py-2 focus:outline-none focus:border-[#2B1B12] placeholder:text-[#A89F92]"
+                  placeholder="Bathrooms..."
+                />
+                <p *ngIf="getFieldError('bathrooms')" class="text-red-600 text-sm mt-1">
+                  {{ getFieldError('bathrooms') }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="currentStep === 3" class="space-y-4 animate-fadeIn">
+            <h2 class="text-2xl font-bold text-[#2B1B12]">Images</h2>
+
+            <label class="block mb-2 text-[#6B5B4D] text-sm font-medium">Upload Images</label>
+            <input
+              type="file"
+              (change)="onImageSelect($event)"
+              multiple
+              accept="image/*"
+              class="block w-full text-sm text-[#2B1B12] border border-[#B99F8A] rounded-lg cursor-pointer bg-[#F8F4F0] focus:outline-none"
+            />
+
+            <div class="flex flex-wrap gap-3 mt-3">
+              <div *ngFor="let img of previewImages; let i = index" class="relative">
+                <img [src]="img" class="w-28 h-28 rounded-lg object-cover shadow" />
+                <button
+                  type="button"
+                  (click)="removeImage(i)"
+                  class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 mt-3">
+              <button
+                *ngIf="previewImages.length"
+                type="button"
+                (click)="clearImages()"
+                class="text-sm text-red-600 underline"
+              >
+                Remove all images
+              </button>
+              <p class="text-sm text-[#6B5B4D] ml-auto">{{ previewImages.length }} selected</p>
+            </div>
+          </div>
+
+          <div *ngIf="currentStep === 4" class="space-y-4 animate-fadeIn">
+            <h2 class="text-2xl font-bold text-[#2B1B12]">Review & Submit</h2>
+
+            <div class="bg-[#F7F3F0] p-4 rounded-lg border border-[#EDE6E0] space-y-2">
+              <div><strong>Title:</strong> {{ postForm.value.title }}</div>
+              <div><strong>Description:</strong> {{ postForm.value.description }}</div>
+              <div><strong>Address:</strong> {{ postForm.value.address }}</div>
+              <div><strong>Type:</strong> {{ postForm.value.propertyType }}</div>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
+                <div><strong>Price:</strong> {{ postForm.value.price }}</div>
+                <div><strong>Area:</strong> {{ postForm.value.area }}</div>
+                <div><strong>Rooms:</strong> {{ postForm.value.rooms }}</div>
+                <div><strong>Baths:</strong> {{ postForm.value.bathrooms }}</div>
+              </div>
+              <div class="mt-3">
+                <strong>Images:</strong>
+                <div class="flex gap-2 mt-2">
+                  <img
+                    *ngFor="let img of previewImages"
+                    [src]="img"
+                    class="w-20 h-20 object-cover rounded-md shadow-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="serverErrorMsg" class="text-red-600 text-center">{{ serverErrorMsg }}</div>
+            <div *ngIf="successMessage" class="text-green-600 text-center">
+              {{ successMessage }}
+            </div>
+          </div>
+
+          <div class="mt-6 flex items-center justify-between">
+            <button
+              type="button"
+              (click)="prev()"
+              class="px-5 py-2 rounded-md border border-[#E0D3C5] text-[#6B5B4D] hover:bg-[#F2EFEA] transition"
+              [disabled]="currentStep === 0"
+            >
+              Back
+            </button>
+
+            <div class="flex items-center gap-3">
+              <button
+                *ngIf="currentStep < steps.length - 1"
+                type="button"
+                (click)="next()"
+                class="px-6 py-2 rounded-md bg-[#2B1B12] text-white font-semibold hover:bg-[#3b261a] transition"
+              >
+                Next
+              </button>
+              <div class="mb-6"></div>
+
+              <button
+                *ngIf="currentStep === steps.length - 1"
+                type="submit"
+                [disabled]="isLoading"
+                class="px-6 py-2 rounded-md bg-[#2B1B12] text-white font-semibold hover:bg-[#3b261a] transition"
+              >
+                <span *ngIf="isLoading" class="animate-pulse">Creating Post...</span>
+                <span *ngIf="!isLoading">Create Post</span>
               </button>
             </div>
-            }
           </div>
-          <button
-            *ngIf="previewImages.length"
-            type="button"
-            (click)="clearImages()"
-            class="cursor-pointer mt-2 text-sm text-red-600 underline"
-          >
-            Remove all images
-          </button>
-        </div>
-
-        <!-- Property Info -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-[#6B5B4D] text-sm font-medium mb-1">Property Type</label>
-            <select
-              formControlName="propertyType"
-              class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
-            >
-              <option value="">Select...</option>
-              <option>Apartment</option>
-              <option>Villa</option>
-              <option>Studio</option>
-              <option>Land</option>
-            </select>
-            @if(getFieldError('propertyType')) {
-            <div class="text-red-600 text-sm mt-1">{{ getFieldError('propertyType') }}</div>
-            }
-          </div>
-
-          <div>
-            <label class="block text-[#6B5B4D] text-sm font-medium mb-1">Price ($)</label>
-            <input
-              type="number"
-              formControlName="price"
-              class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
-            />
-            @if(getFieldError('price')) {
-            <div class="text-red-600 text-sm mt-1">{{ getFieldError('price') }}</div>
-            }
-          </div>
-
-          <div>
-            <label class="block text-[#6B5B4D] text-sm font-medium mb-1">Area (m²)</label>
-            <input
-              type="text"
-              formControlName="area"
-              class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
-            />
-            @if(getFieldError('area')) {
-            <div class="text-red-600 text-sm mt-1">{{ getFieldError('area') }}</div>
-            }
-          </div>
-
-          <div>
-            <label class="block text-[#6B5B4D] text-sm font-medium mb-1">Rooms</label>
-            <input
-              type="text"
-              formControlName="rooms"
-              class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
-            />
-            @if(getFieldError('rooms')) {
-            <div class="text-red-600 text-sm mt-1">{{ getFieldError('rooms') }}</div>
-            }
-          </div>
-
-          <div>
-            <label class="block text-[#6B5B4D] text-sm font-medium mb-1">Bathrooms</label>
-            <input
-              type="text"
-              formControlName="bathrooms"
-              class="w-full border-b-2 border-[#B99F8A] py-2 bg-transparent focus:outline-none focus:border-[#2B1B12]"
-            />
-            @if(getFieldError('bathrooms')) {
-            <div class="text-red-600 text-sm mt-1">{{ getFieldError('bathrooms') }}</div>
-            }
-          </div>
-        </div>
-
-        <!-- Messages -->
-        @if(serverErrorMsg) {
-        <div class="text-red-600 text-center">{{ serverErrorMsg }}</div>
-        } @if(successMessage) {
-        <div class="text-green-600 text-center">{{ successMessage }}</div>
-        }
-
-        <!-- Submit -->
-        <button
-          type="submit"
-          [disabled]="postForm.invalid || isLoading"
-          class="w-full bg-[#2B1B12] hover:bg-[#3b261a] transition-all text-white font-semibold py-3 rounded-lg disabled:opacity-50"
-        >
-          @if(isLoading) {
-          <span class="animate-pulse">Creating Post...</span>
-          } @else { Add Post }
-        </button>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </section>
