@@ -135,3 +135,192 @@
     </div>
   </ng-template>
 </div>
+<div
+  *ngIf="showOfferModal"
+  class="fixed inset-0 bg-black/50 flex justify-center items-center z-50 px-4"
+>
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-xl p-6 relative animate-fadeIn">
+    <button
+      (click)="closeOfferModal()"
+      class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl"
+    >
+      &times;
+    </button>
+    <h2 class="text-xl font-semibold text-[#2B1B12] mb-4 text-center">Make an Offer</h2>
+
+    <form [formGroup]="offerForm" (ngSubmit)="submitOffer()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Amount</label>
+        <input
+          type="number"
+          formControlName="amount"
+          class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2B1B12] outline-none"
+          placeholder="Enter offer amount"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Message</label>
+        <textarea
+          formControlName="message"
+          rows="3"
+          class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2B1B12] outline-none"
+          placeholder="Write a short message..."
+        ></textarea>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 mt-5">
+        <button
+          type="submit"
+          [disabled]="offerForm.invalid"
+          class="flex-1 bg-[#2B1B12] hover:bg-[#3b261a] text-white py-2 rounded-lg transition disabled:opacity-50"
+        >
+          Send Offer
+        </button>
+        <button
+          type="button"
+          (click)="closeOfferModal()"
+          class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded-lg transition"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  *ngIf="showEditModal"
+  class="fixed inset-0 bg-black/50 flex justify-center items-center z-50 px-4"
+>
+  <div
+    class="bg-white w-full max-w-lg rounded-2xl shadow-xl p-6 relative animate-fadeIn overflow-y-auto max-h-[90vh]"
+  >
+    <button
+      (click)="closeEditModal()"
+      class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl"
+    >
+      &times;
+    </button>
+    <h2 class="text-xl font-semibold text-[#2B1B12] mb-4 text-center">Edit Post</h2>
+
+    <form [formGroup]="updateForm" (ngSubmit)="savePostUpdate()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Title</label>
+        <input
+          formControlName="title"
+          class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2B1B12] outline-none"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Description</label>
+        <textarea
+          formControlName="description"
+          rows="3"
+          class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2B1B12] outline-none"
+        ></textarea>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Address</label>
+          <input
+            formControlName="address"
+            class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2B1B12] outline-none"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Price</label>
+          <input
+            type="number"
+            formControlName="price"
+            class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2B1B12] outline-none"
+          />
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Area (m²)</label>
+          <input
+            type="number"
+            formControlName="area"
+            class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2B1B12] outline-none"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Rooms</label>
+          <input
+            type="number"
+            formControlName="rooms"
+            class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2B1B12] outline-none"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Bathrooms</label>
+          <input
+            type="number"
+            formControlName="bathrooms"
+            class="w-full border rounded-lg px-3 py-2 mt-1 focus:ring-2 focus:ring-[#2B1B12] outline-none"
+          />
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 mt-5">
+        <button
+          type="submit"
+          [disabled]="updateForm.invalid"
+          class="flex-1 bg-[#2B1B12] hover:bg-[#3b261a] text-white py-2 rounded-lg transition disabled:opacity-50"
+        >
+          Save
+        </button>
+        <button
+          type="button"
+          (click)="closeEditModal()"
+          class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded-lg transition"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div
+  *ngIf="showDeleteConfirm"
+  class="fixed inset-0 bg-black/50 flex justify-center items-center z-50 px-4"
+>
+  <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl p-6 relative animate-fadeIn">
+    <h2 class="text-lg font-semibold text-center text-[#2B1B12] mb-4">Confirm Deletion</h2>
+    <p class="text-gray-600 text-center mb-6">
+      Are you sure you want to delete this post? This action cannot be undone.
+    </p>
+
+    <div class="flex flex-col sm:flex-row gap-3">
+      <button
+        (click)="deletePost()"
+        class="flex-1 bg-red-700 hover:bg-red-800 text-white py-2 rounded-lg transition"
+      >
+        Delete
+      </button>
+      <button
+        (click)="cancelDelete()"
+        class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 rounded-lg transition"
+      >
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="showToast"
+  class="fixed bottom-5 right-5 px-4 py-2 rounded-lg text-white shadow-lg transition-all"
+  [ngClass]="{
+    'bg-green-600': toastType === 'success',
+    'bg-red-600': toastType === 'error'
+  }"
+>
+  {{ toastMessage }}
+</div>
