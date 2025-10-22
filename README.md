@@ -1,14 +1,78 @@
-# SimsarkFrontend
+# Simsark Web Application
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.3.
+A full-stack web application built using **Angular** (frontend) and **Express.js** (backend).  
+This project provides a modular and scalable structure for building modern web applications with clean UI, secure authentication, and fast API interactions.
 
-## Development server
+---
 
-To start a local development server, run:
+## Tech Stack
 
-```bash
-ng serve
-```
+### **Frontend**
+- [Angular 20+](https://angular.io/)
+- [Vite](https://vitejs.dev/) (for fast development builds)
+- [TypeScript](https://www.typescriptlang.org/)
+- [TailwindCSS / SCSS] (for responsive styling)
+- [RxJS](https://rxjs.dev/) (reactive state management)
+
+### **Backend**
+- [Express.js](https://expressjs.com/)
+- [Node.js](https://nodejs.org/)
+- RESTful API architecture
+- JWT Authentication (if implemented)
+- Middleware for request validation & authorization
+
+---
+
+##  Project Structure
+
+```plaintext
+simsark-frontend/
+├── .angular/                 # Angular cache
+│   └── cache/
+│       └── 20.3.6/
+│           └── simsark-frontend/
+│               └── vite/
+│                   ├── deps/
+│                   └── deps_ssr/
+├── .vscode/                  # VS Code settings
+├── public/                   # Public static files
+└── src/
+    ├── app/
+    │   ├── components/
+    │   │   ├── auth/         # Authentication-related components
+    │   │   │   ├── forget-pass/
+    │   │   │   ├── login/
+    │   │   │   ├── offers-list/
+    │   │   │   ├── portfolio/
+    │   │   │   ├── profile/
+    │   │   │   ├── register/
+    │   │   │   ├── reset-pass/
+    │   │   │   ├── user/
+    │   │   │   └── user-offers/
+    │   │   └── shared/       # Reusable shared UI components
+    │   │       ├── explore/
+    │   │       ├── footer/
+    │   │       ├── header/
+    │   │       ├── navbar/
+    │   │       └── payment/
+    │   ├── guards/           # Route guards for access control
+    │   ├── interceptors/     # HTTP interceptors (auth, error handling)
+    │   ├── models/           # TypeScript interfaces & models
+    │   ├── pages/            # Application main pages
+    │   │   ├── about/
+    │   │   ├── contact/
+    │   │   ├── explore/
+    │   │   ├── home/
+    │   │   ├── new-post/
+    │   │   ├── offer-details/
+    │   │   ├── page-not-found/
+    │   │   └── post-details/
+    │   ├── services/         # Data and API interaction services
+    │   └── validators/       # Custom form validators
+    ├── assets/               # Images, icons, and static content
+    │   ├── Landing/
+    │   └── placeholders/
+    └── environments/         # Environment configurations
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
