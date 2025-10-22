@@ -102,7 +102,7 @@
 
   <div
     *ngIf="menuOpen"
-    class="fixed left-0 top-[64px] w-full h-[50vh] bg-[#2B1B12] border-t border-[#3B261A] shadow-lg md:hidden animate-slideDown z-40 overflow-y-auto"
+    class="fixed left-0 top-[64px] w-full h-[50vh] bg-[#2B1B12] border-t border-[#3B261A] shadow-lg md:hidden animate-slideDown z-200 overflow-y-auto"
   >
     <ul class="flex flex-col items-center space-y-4 py-6 font-medium">
       <li>
@@ -113,6 +113,9 @@
       </li>
       <li>
         <a routerLink="/contact" (click)="closeMenu()" class="hover:text-[#E9DCCB]/80">Contact</a>
+      </li>
+      <li>
+        <a routerLink="/about" (click)="closeMenu()" class="hover:text-[#E9DCCB]/80">About Us</a>
       </li>
 
       @if ((isSeller$ | async) === true) {
