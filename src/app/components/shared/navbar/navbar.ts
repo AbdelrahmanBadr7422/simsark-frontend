@@ -1,12 +1,12 @@
 import { Component, inject, signal, computed } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Auth } from '../../../services/auth';
-import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, AsyncPipe, CommonModule, NgIf],
+  imports: [RouterLink, RouterLinkActive, AsyncPipe, CommonModule],
   templateUrl: './navbar.html',
 })
 export class Navbar {

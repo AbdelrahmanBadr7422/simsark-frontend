@@ -10,50 +10,30 @@
     </a>
   </div>
 
+  <!-- Mobile Menu Button -->
   <button class="md:hidden text-[#E9DCCB] text-3xl focus:outline-none" (click)="toggleMenu()">
-    <i class="fa-solid" [ngClass]="menuOpen ? 'fa-xmark' : 'fa-bars'"></i>
+    <i class="fa-solid" [ngClass]="menuOpen() ? 'fa-xmark' : 'fa-bars'"></i>
   </button>
 
+  <!-- Desktop Links -->
   <ul class="hidden md:flex space-x-6 lg:space-x-10 font-medium items-center">
+    @for (link of [ { label: 'Home', path: '/home' }, { label: 'Explore', path: '/explore' }, {
+    label: 'Contact', path: '/contact' }, { label: 'About Us', path: '/about' } ]; track link.path)
+    {
     <li>
       <a
-        routerLink="/home"
+        routerLink="{{ link.path }}"
         routerLinkActive="text-[#D7C3B8] font-semibold border-b-2 border-[#D7C3B8]"
         [routerLinkActiveOptions]="{ exact: true }"
         class="hover:text-[#E9DCCB]/80 transition-colors duration-200 pb-1"
       >
-        Home
+        {{ link.label }}
       </a>
     </li>
-    <li>
-      <a
-        routerLink="/explore"
-        routerLinkActive="text-[#D7C3B8] font-semibold border-b-2 border-[#D7C3B8]"
-        class="hover:text-[#E9DCCB]/80 transition-colors duration-200 pb-1"
-      >
-        Explore
-      </a>
-    </li>
-    <li>
-      <a
-        routerLink="/contact"
-        routerLinkActive="text-[#D7C3B8] font-semibold border-b-2 border-[#D7C3B8]"
-        class="hover:text-[#E9DCCB]/80 transition-colors duration-200 pb-1"
-      >
-        Contact
-      </a>
-    </li>
-    <li>
-      <a
-        routerLink="/about"
-        routerLinkActive="text-[#D7C3B8] font-semibold border-b-2 border-[#D7C3B8]"
-        class="hover:text-[#E9DCCB]/80 transition-colors duration-200 pb-1"
-      >
-        About Us
-      </a>
-    </li>
+    }
   </ul>
 
+  <!-- Right side (Auth Buttons / Profile Dropdown) -->
   <div class="hidden md:flex items-center space-x-4">
     @if ((isLogged$ | async) === false) {
     <button
@@ -68,7 +48,7 @@
     >
       Login
     </button>
-    } @else { @if((isSeller$ | async) === true){
+    } @else { @if ((isSeller$ | async) === true) {
     <button
       routerLink="/create-post"
       class="bg-[#D7C3B8] text-[#2B1B12] font-semibold px-5 py-2 rounded-md hover:bg-[#B99F8A] transition-all duration-200"
@@ -77,7 +57,7 @@
     </button>
     }
 
-    <div class="relative" (click)="toggleDropdown()" (mouseleave)="dropdownOpen = false">
+    <div class="relative" (click)="toggleDropdown()" (mouseleave)="dropdownOpen.set(false)">
       <button
         class="flex items-center gap-2 border border-[#D7C3B8]/40 text-[#E9DCCB] px-4 py-2 rounded-md hover:bg-[#3B261A] transition-all duration-200"
       >
@@ -85,8 +65,8 @@
         <i class="fa-solid fa-caret-down text-sm"></i>
       </button>
 
+      @if (dropdownOpen()) {
       <div
-        *ngIf="dropdownOpen"
         class="absolute right-0 w-40 bg-[#3B261A] text-[#E9DCCB] rounded-md shadow-lg overflow-hidden border border-[#4A2E1D]"
       >
         <a routerLink="/user/profile" class="block px-4 py-2 hover:bg-[#4A2E1D] transition">
@@ -96,29 +76,26 @@
           Logout
         </button>
       </div>
+      }
     </div>
     }
   </div>
 
+  <!-- Mobile Menu -->
+  @if (menuOpen()) {
   <div
-    *ngIf="menuOpen"
     class="fixed left-0 top-[64px] w-full h-[50vh] bg-[#2B1B12] border-t border-[#3B261A] shadow-lg md:hidden animate-slideDown z-200 overflow-y-auto"
   >
     <ul class="flex flex-col items-center space-y-4 py-6 font-medium">
+      @for (link of [ { label: 'Home', path: '/home' }, { label: 'Explore', path: '/explore' }, {
+      label: 'Contact', path: '/contact' }, { label: 'About Us', path: '/about' } ]; track
+      link.path) {
       <li>
-        <a routerLink="/home" (click)="closeMenu()" class="hover:text-[#E9DCCB]/80">Home</a>
+        <a routerLink="{{ link.path }}" (click)="closeMenu()" class="hover:text-[#E9DCCB]/80">
+          {{ link.label }}
+        </a>
       </li>
-      <li>
-        <a routerLink="/explore" (click)="closeMenu()" class="hover:text-[#E9DCCB]/80">Explore</a>
-      </li>
-      <li>
-        <a routerLink="/contact" (click)="closeMenu()" class="hover:text-[#E9DCCB]/80">Contact</a>
-      </li>
-      <li>
-        <a routerLink="/about" (click)="closeMenu()" class="hover:text-[#E9DCCB]/80">About Us</a>
-      </li>
-
-      @if ((isSeller$ | async) === true) {
+      } @if ((isSeller$ | async) === true) {
       <li>
         <a routerLink="/create-post" (click)="closeMenu()" class="hover:text-[#E9DCCB]/80">
           Advertise
@@ -160,4 +137,5 @@
       </div>
     </ul>
   </div>
+  }
 </nav>
