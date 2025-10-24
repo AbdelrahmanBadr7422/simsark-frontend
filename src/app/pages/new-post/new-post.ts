@@ -11,6 +11,7 @@ import { Post } from '../../services/post';
 import { PropertyTypeValidator } from '../../validators/property-type.validator';
 import { CreatePostResponse } from '../../models/postModels';
 import { CommonModule } from '@angular/common';
+import { takeUntil, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-new-post',
@@ -49,6 +50,7 @@ export class NewPost implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private postService = inject(Post);
+  private destroy$ = new Subject<void>();
 
   ngOnInit() {
     this.postForm = this.fb.group({
@@ -195,20 +197,23 @@ export class NewPost implements OnInit {
 
     this.selectedFiles.forEach((file) => formData.append('images', file));
 
-    this.postService.createPost(formData).subscribe({
-      next: (res: CreatePostResponse) => {
-        this.isLoading = false;
-        this.successMessage = 'Post created successfully! Redirecting...';
-        this.postForm.reset();
-        this.previewImages = [];
-        this.selectedFiles = [];
-        setTimeout(() => this.router.navigate(['/explore']), 900);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.serverErrorMsg = err?.error?.message || 'Something went wrong. Please try again.';
-      },
-    });
+    this.postService
+      .createPost(formData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: CreatePostResponse) => {
+          this.isLoading = false;
+          this.successMessage = 'Post created successfully! Redirecting...';
+          this.postForm.reset();
+          this.previewImages = [];
+          this.selectedFiles = [];
+          setTimeout(() => this.router.navigate(['/explore']), 900);
+        },
+        error: (err) => {
+          this.isLoading = false;
+          this.serverErrorMsg = err?.error?.message || 'Something went wrong. Please try again.';
+        },
+      });
   }
 
   getFieldError(controlName: keyof typeof this.controls): string | null {
@@ -221,5 +226,10 @@ export class NewPost implements OnInit {
     if (errors['min']) return `Value must be at least ${errors['min'].min}.`;
     if (errors['invalidPropertyType']) return 'Invalid property type.';
     return null;
+  }
+
+  ngOnDestroy(){
+    this.destroy$.next()
+    this.destroy$.complete()
   }
 }

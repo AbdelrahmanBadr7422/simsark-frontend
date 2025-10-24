@@ -1,7 +1,16 @@
-import { Component, OnInit, inject, signal, WritableSignal, computed } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  inject,
+  signal,
+  WritableSignal,
+  computed,
+  OnDestroy,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Post } from '../../services/post';
 import { GetPostsResponse, PostModel } from '../../models/postModels';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-explore',
@@ -9,8 +18,10 @@ import { GetPostsResponse, PostModel } from '../../models/postModels';
   imports: [RouterLink],
   templateUrl: './explore.html',
 })
-export class Explore implements OnInit {
+export class Explore implements OnInit, OnDestroy {
   private _postService = inject(Post);
+  private destroy$ = new Subject<void>();
+
   postsList: WritableSignal<PostModel[]> = signal([]);
   isLoading = signal(true);
   serverErrorMsg = signal('');
@@ -41,20 +52,23 @@ export class Explore implements OnInit {
     this.isLoading.set(true);
     this.serverErrorMsg.set('');
 
-    this._postService.getAllPosts().subscribe({
-      next: (res: GetPostsResponse) => {
-        this.isLoading.set(false);
-        if (res.data && res.success) {
-          this.postsList.set(res.data);
-        } else {
-          this.serverErrorMsg.set('No posts found.');
-        }
-      },
-      error: () => {
-        this.isLoading.set(false);
-        this.serverErrorMsg.set('Failed to load posts. Please try again.');
-      },
-    });
+    this._postService
+      .getAllPosts()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: GetPostsResponse) => {
+          this.isLoading.set(false);
+          if (res.data && res.success) {
+            this.postsList.set(res.data);
+          } else {
+            this.serverErrorMsg.set('No posts found.');
+          }
+        },
+        error: () => {
+          this.isLoading.set(false);
+          this.serverErrorMsg.set('Failed to load posts. Please try again.');
+        },
+      });
   }
 
   private priceMatches(price: number, range: string): boolean {
@@ -70,5 +84,10 @@ export class Explore implements OnInit {
     this.location.set('');
     this.propertyType.set('');
     this.priceRange.set('');
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

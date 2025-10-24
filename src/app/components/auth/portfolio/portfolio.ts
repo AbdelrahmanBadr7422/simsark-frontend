@@ -1,7 +1,8 @@
-import { Component, computed, inject, signal, WritableSignal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { Post } from '../../../services/post';
 import { PostModel, GetPostsResponse } from '../../../models/postModels';
 import { RouterLink } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-portfolio',
@@ -9,8 +10,9 @@ import { RouterLink } from '@angular/router';
   templateUrl: './portfolio.html',
   styles: ``,
 })
-export class Portfolio {
+export class Portfolio implements OnInit,OnDestroy {
   private _postService = inject(Post);
+  private destroy$ = new Subject<void>();
 
   postsList: WritableSignal<PostModel[]> = signal([]);
   isLoading = signal(true);
@@ -43,20 +45,23 @@ export class Portfolio {
     this.serverErrorMsg.set('');
     const userData = localStorage.getItem('userData');
     const ownerId = userData ? JSON.parse(userData)._id : null;
-    this._postService.getPostsByOwner(ownerId).subscribe({
-      next: (res: GetPostsResponse) => {
-        this.isLoading.set(false);
-        if (res.data && res.success) {
-          this.postsList.set(res.data);
-        } else {
-          this.serverErrorMsg.set('No posts found.');
-        }
-      },
-      error: () => {
-        this.isLoading.set(false);
-        this.serverErrorMsg.set('Failed to load posts. Please try again.');
-      },
-    });
+    this._postService
+      .getPostsByOwner(ownerId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: GetPostsResponse) => {
+          this.isLoading.set(false);
+          if (res.data && res.success) {
+            this.postsList.set(res.data);
+          } else {
+            this.serverErrorMsg.set('No posts found.');
+          }
+        },
+        error: () => {
+          this.isLoading.set(false);
+          this.serverErrorMsg.set('Failed to load posts. Please try again.');
+        },
+      });
   }
 
   private priceMatches(price: number, range: string): boolean {
@@ -72,5 +77,10 @@ export class Portfolio {
     this.location.set('');
     this.propertyType.set('');
     this.priceRange.set('');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

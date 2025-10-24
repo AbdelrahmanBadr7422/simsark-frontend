@@ -1,18 +1,21 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Auth } from '../../../services/auth';
-import { LoginResponse, UserLogin, UserRoleEnum } from '../../../models/authModels';
+import { LoginResponse, UserLogin } from '../../../models/authModels';
 
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
 })
-export class Login implements OnInit {
+export class Login implements OnInit, OnDestroy {
   private _authService = inject(Auth);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private destroy$ = new Subject<void>();
 
   loginForm!: FormGroup;
   loginStatusMsg = '';
@@ -42,18 +45,23 @@ export class Login implements OnInit {
 
     const userLogin: UserLogin = this.loginForm.value;
 
-    this._authService.loginService(userLogin).subscribe({
-      next: (res: LoginResponse) => {
-        this.isLoading = false;
-        this.loginStatusMsg = res.message;
-
-        const role = res.data?.role;
+    this._authService.loginService(userLogin)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: LoginResponse) => {
+          this.isLoading = false;
+          this.loginStatusMsg = res.message;
           this.router.navigate(['/explore']);
-      },
-      error: (err: LoginResponse) => {
-        this.isLoading = false;
-        this.serverErrorMsg = err.message || 'Login failed. Please try again.';
-      },
-    });
+        },
+        error: (err: LoginResponse) => {
+          this.isLoading = false;
+          this.serverErrorMsg = err.message || 'Login failed. Please try again.';
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

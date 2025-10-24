@@ -1,14 +1,16 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { Auth } from '../../../services/auth';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
   imports: [CommonModule],
   templateUrl: './profile.html',
 })
-export class Profile implements OnInit {
+export class Profile implements OnInit, OnDestroy {
   private _authService = inject(Auth);
+  private destroy$ = new Subject<void>();
 
   userData: any = {};
   fields: { key: string; label: string; value: string }[] = [];
@@ -63,23 +65,31 @@ export class Profile implements OnInit {
     this.resetError = false;
     this.resetPassMsg = '';
 
-    this._authService.changePassService(newPassword).subscribe({
-      next: (res) => {
-        this.resetPassMsg = res.message || 'Password updated successfully!';
-        this.resetError = false;
-        this.resetToggle = true;
-      },
-      error: (err) => {
-        console.error('Error updating password:', err);
-        this.passwordError = err?.error?.message || 'Failed to update password.';
-        this.resetError = true;
-      },
-    });
+    this._authService
+      .changePassService(newPassword)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.resetPassMsg = res.message || 'Password updated successfully!';
+          this.resetError = false;
+          this.resetToggle = true;
+        },
+        error: (err) => {
+          console.error('Error updating password:', err);
+          this.passwordError = err?.error?.message || 'Failed to update password.';
+          this.resetError = true;
+        },
+      });
   }
 
   cancelReset() {
     this.resetToggle = true;
     this.passwordError = '';
     this.resetPassMsg = '';
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

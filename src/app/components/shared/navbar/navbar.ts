@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Auth } from '../../../services/auth';
 import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
@@ -10,29 +10,32 @@ import { AsyncPipe, CommonModule, NgIf } from '@angular/common';
   templateUrl: './navbar.html',
 })
 export class Navbar {
-  private authService = inject(Auth);
-  private router = inject(Router);
+  private readonly authService = inject(Auth);
+  private readonly router = inject(Router);
 
-  isLogged$ = this.authService.isLogged$;
-  isSeller$ = this.authService.isSeller$;
+  readonly isLogged$ = this.authService.isLogged$;
+  readonly isSeller$ = this.authService.isSeller$;
 
-  menuOpen = false;
-  dropdownOpen = false;
+  readonly menuOpen = signal(false);
+  readonly dropdownOpen = signal(false);
 
-  toggleMenu() {
-    this.menuOpen = !this.menuOpen;
+  readonly isAnyMenuOpen = computed(() => this.menuOpen() || this.dropdownOpen());
+
+  toggleMenu(): void {
+    this.menuOpen.update((v) => !v);
   }
 
-  toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
+  toggleDropdown(): void {
+    this.dropdownOpen.update((v) => !v);
   }
 
-  logout() {
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
+
+  logout(): void {
     this.authService.logout();
-    this.dropdownOpen = false;
+    this.dropdownOpen.set(false);
     this.router.navigate(['/home']);
-  }
-  closeMenu() {
-    this.menuOpen = false;
   }
 }

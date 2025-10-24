@@ -1,19 +1,21 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Auth } from '../../../services/auth';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-reset-password',
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './reset-pass.html',
 })
-export class ResetPass {
+export class ResetPass implements OnInit, OnDestroy {
   private _fb = inject(FormBuilder);
   private _authService = inject(Auth);
   private _route = inject(ActivatedRoute);
   private _router = inject(Router);
+  private destroy$ = new Subject<void>();
 
   showPassword = false;
   token: string = '';
@@ -49,17 +51,25 @@ export class ResetPass {
     this.isLoading = true;
     const password = this.resetForm.value.password!;
 
-    this._authService.resetPassService(password, this.token).subscribe({
-      next: (res) => {
-        this.successMsg = res.message || 'Password reset successfully!';
-        this.isLoading = false;
+    this._authService
+      .resetPassService(password, this.token)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res) => {
+          this.successMsg = res.message || 'Password reset successfully!';
+          this.isLoading = false;
 
-        setTimeout(() => this._router.navigate(['/auth/login']), 3000);
-      },
-      error: (err) => {
-        this.serverErrorMsg = err?.error?.message || 'Failed to reset password.';
-        this.isLoading = false;
-      },
-    });
+          setTimeout(() => this._router.navigate(['/auth/login']), 3000);
+        },
+        error: (err) => {
+          this.serverErrorMsg = err?.error?.message || 'Failed to reset password.';
+          this.isLoading = false;
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

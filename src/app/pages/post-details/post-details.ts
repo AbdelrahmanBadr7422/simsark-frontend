@@ -2,10 +2,9 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { CommonModule, DatePipe, JsonPipe } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Offer } from '../../services/offer';
 import { Post } from '../../services/post';
-import { Payment } from '../../components/shared/payment/payment';
 import {
   CreatePostRequest,
   GetPostByIdResponse,
@@ -17,7 +16,7 @@ import { Auth } from '../../services/auth';
 @Component({
   selector: 'app-post-details',
   standalone: true,
-  imports: [CommonModule, DatePipe, Payment, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, DatePipe, ReactiveFormsModule, RouterLink],
   templateUrl: './post-details.html',
 })
 export class PostDetails implements OnInit, OnDestroy {
@@ -42,23 +41,28 @@ export class PostDetails implements OnInit, OnDestroy {
   showToast = false;
   toastMessage = '';
   toastType: 'success' | 'error' = 'success';
+  updateForm!: FormGroup;
+  offerForm!: FormGroup;
 
-  updateForm = this.fb.group({
-    title: ['', [Validators.required, Validators.minLength(5)]],
-    description: ['', [Validators.required, Validators.minLength(10)]],
-    address: ['', [Validators.required, Validators.minLength(5)]],
-    price: [0, [Validators.required, Validators.min(1)]],
-    area: [0, [Validators.required, Validators.min(1)]],
-    rooms: [0, [Validators.required, Validators.min(1)]],
-    bathrooms: [0, [Validators.required, Validators.min(1)]],
-  });
+  private initForms() {
+    this.updateForm = this.fb.group({
+      title: ['', [Validators.required, Validators.minLength(5)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      address: ['', [Validators.required, Validators.minLength(5)]],
+      price: [0, [Validators.required, Validators.min(1)]],
+      area: [0, [Validators.required, Validators.min(1)]],
+      rooms: [0, [Validators.required, Validators.min(1)]],
+      bathrooms: [0, [Validators.required, Validators.min(1)]],
+    });
 
-  offerForm = this.fb.group({
-    amount: [0, [Validators.required, Validators.min(1)]],
-    message: ['', [Validators.required, Validators.minLength(5)]],
-  });
+    this.offerForm = this.fb.group({
+      amount: [0, [Validators.required, Validators.min(1)]],
+      message: ['', [Validators.required, Validators.minLength(5)]],
+    });
+  }
 
   ngOnInit(): void {
+    this.initForms();
     this.displayPost();
   }
 
@@ -129,13 +133,16 @@ export class PostDetails implements OnInit, OnDestroy {
       message: this.offerForm.value.message!,
     };
 
-    this.offerService.addOfferService(offer).subscribe({
-      next: (res: CreateOfferResponse) => {
-        this.showOfferModal = false;
-        this.showToastMessage(' Offer sent successfully!', 'success');
-      },
-      error: () => this.showToastMessage('Failed to send offer', 'error'),
-    });
+    this.offerService
+      .addOfferService(offer)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: CreateOfferResponse) => {
+          this.showOfferModal = false;
+          this.showToastMessage(' Offer sent successfully!', 'success');
+        },
+        error: () => this.showToastMessage('Failed to send offer', 'error'),
+      });
   }
 
   confirmDelete() {
